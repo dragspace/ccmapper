@@ -9,8 +9,6 @@ import org.apache.ibatis.javassist.CtClass;
 import org.apache.ibatis.javassist.CtMethod;
 import org.apache.ibatis.javassist.NotFoundException;
 
-import com.ccmapper.custom.CommonMapper;
-
 
 /**
  * @Description: GenericUtils 泛型工具类 主要是来处理 commmonmapper的泛型问题 以TCommonMapper为原型
@@ -20,7 +18,6 @@ import com.ccmapper.custom.CommonMapper;
 public class GenericUtils {
 
 	public static CtClass tCommonMapperCtClass;
-	public static CtClass commonMapperCtClass;
 	public static ClassPool pool = ClassPool.getDefault();
 	private static String tClassStr = TClass.class.getName().replace(".", "/");
 	private static Map<String, CtMethod> tMapperMethodMap = new HashMap<String, CtMethod>();
@@ -38,8 +35,6 @@ public class GenericUtils {
 				tMapperMethodMap.put(ctMethod.getName(), ctMethod);
 			}
 			
-			commonMapperCtClass = pool.getCtClass(CommonMapper.class.getName());
-			
 			for (Method ctMethod : Object.class.getMethods()) {
 				objectMethod.put(ctMethod.getName(), true);
 			}
@@ -56,6 +51,16 @@ public class GenericUtils {
 		return objectMethod.containsKey(shortName);
 	}
 
+	public static CtClass getCtClass(Class<?> clazz){
+		try {
+			return pool.getCtClass(clazz.getName());
+		} catch (NotFoundException e) {
+			//不可能吧
+			throw new RuntimeException("获取ctClass失败", e);
+		}
+	}
+	
+	
 	/**
 	 * @Title: setTCommonMapperGeneric
 	 * @Description: 设置mapper的class的泛型
@@ -75,7 +80,7 @@ public class GenericUtils {
 	 * @param beanClass
 	 * @param ctMethod
 	 */
-	public static void setTMethodGeneric(Class<?> beanClass, CtMethod ctMethod) {
+	public static void setTMethodGeneric(Class<?> beanClass, CtMethod ctMethod, CtClass superMapperClass) {
 		try {
 
 			// 设置方法返回值泛型
@@ -84,26 +89,37 @@ public class GenericUtils {
 			if (srcTMethod == null) {
 				throw new RuntimeException("不存在的方法[" + methodName + "] class [" + TCommonMapper.class.getName() + "]");
 			}
-			CtClass returnType = srcTMethod.getReturnType();
-			if (returnType.getGenericSignature() != null) {
-				ctMethod.getReturnType().setGenericSignature(getGenericBeanClassString(returnType.getGenericSignature(), beanClass));
-			}
+			//可以不用设置返回值泛型
+//			CtClass returnType = srcTMethod.getReturnType();
+//			if (returnType.getGenericSignature() != null) {
+//				System.out.println("return [" + returnType.getGenericSignature() +  "]");
+//				ctMethod.getReturnType().setGenericSignature(getGenericBeanClassString(returnType.getGenericSignature(), beanClass));
+//			}
 			// 设置方法泛型
 			if (srcTMethod.getGenericSignature() != null) {
+				System.out.println("--" + getCtMethod(srcTMethod.getName(), superMapperClass).getGenericSignature());
+				System.out.println("src   " + srcTMethod.getName() +" [" +  ctMethod.getGenericSignature() + "]");
+				System.out.println("method "+ srcTMethod.getName() +" [" + getGenericBeanClassString(srcTMethod.getGenericSignature(), beanClass) +  "]");
 				ctMethod.setGenericSignature(getGenericBeanClassString(srcTMethod.getGenericSignature(), beanClass));
 			}
 
-		} catch (NotFoundException e) {
+		} catch (Exception e) {
 			throw new RuntimeException("设置方法泛型失败", e);
 		}
-
 	}
+	
+	private static CtMethod getCtMethod(String methdoName, CtClass ctc){
+		
+		for(CtMethod cm : ctc.getMethods()){
+			if(methdoName.equals(cm.getName())){
+				return cm;
+			}
+		}
+		throw new RuntimeException(String.format("没有找到该方法%s, 类 %s", methdoName, ctc.getName()));
+	} 
 
 	private static String getGenericBeanClassString(String srcGeneric, Class<?> beanClass) {
 		return srcGeneric.replace(tClassStr, beanClass.getName().replace(".", "/"));
 	}
 
-	public static Class<?> getSqlProvideClazz(Class<?> t){
-		return null;
-	}
 }

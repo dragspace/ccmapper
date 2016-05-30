@@ -28,7 +28,6 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 
 import com.ccmapper.custom.CommonDynamicMapperProvider;
-import com.ccmapper.custom.CommonMapper;
 
 
 public class MapperDynamicUtils {
@@ -86,18 +85,18 @@ public class MapperDynamicUtils {
 	 * @Description: 生成代理接口类
 	 * @author xiaoruihu
 	 * @param beanClazz
-	 * @param CommonMapperClass
+	 * @param commonMapperClass
 	 * @return
 	 */
-	public static Class<?> generateMapperClass(Class<?> beanClazz, Class<?> CommonMapperClass) {
+	public static Class<?> generateMapperClass(Class<?> beanClazz, Class<?> commonMapperClass, Class<?> commonSqlProviderClass) {
 
 		try {
 			ClassPool pool = ClassPool.getDefault();
 			pool.insertClassPath(new ClassClassPath(MapperDynamicUtils.class));
-			CtClass superIn = pool.get(CommonMapperClass.getName());
+			CtClass superIn = pool.get(commonMapperClass.getName());
 			CtClass ct = pool.makeInterface(generateClassName("ProxyCommonMapper" + beanClazz.getSimpleName()));
 			GenericUtils.setTCommonMapperGeneric(beanClazz, ct);
-			modifyAnnotation(ct, beanClazz);
+			modifyAnnotation(ct, beanClazz,commonMapperClass, commonSqlProviderClass, superIn);
 			ct.setSuperclass(superIn);
 			return ct.toClass();
 		} catch (Exception e) {
@@ -111,9 +110,9 @@ public class MapperDynamicUtils {
 	 * @author xiaoruihu
 	 * @param ct
 	 */
-	private static void modifyAnnotation(CtClass ctChild, Class<?> beanClazz) {
+	private static void modifyAnnotation(CtClass ctChild, Class<?> beanClazz, Class<?> commonMapperClass, Class<?> commonSqlProviderClass, CtClass superMapperCtClass) {
 
-		CtMethod[] ctMethods = GenericUtils.commonMapperCtClass.getMethods();
+		CtMethod[] ctMethods = GenericUtils.getCtClass(commonMapperClass).getMethods();
 		String commonSqlProviderClassName = generateSqlProvider(beanClazz).getName();
 		for (CtMethod ctMethod : ctMethods) {
 			if (GenericUtils.isObjectMethod(ctMethod.getName())) {
@@ -130,7 +129,7 @@ public class MapperDynamicUtils {
 				
 				MethodInfo minfo = ctMethod.getMethodInfo();
 				CtMethod newMethod = new CtMethod(resultType, ctMethod.getName(), ctMethod.getParameterTypes(), ctChild);
-				GenericUtils.setTMethodGeneric(beanClazz, newMethod);
+				GenericUtils.setTMethodGeneric(beanClazz, newMethod, superMapperCtClass);
 				AnnotationsAttribute attribute = (AnnotationsAttribute) minfo.getAttribute(AnnotationsAttribute.visibleTag);
 				//这种的添加方法
 				
@@ -138,7 +137,6 @@ public class MapperDynamicUtils {
 					for (Class<?> annoClass : mybatisProviderList) {
 						Annotation anno = attribute.getAnnotation(annoClass.getName());
 						if (anno != null) {
-							GenericUtils.setTMethodGeneric(beanClazz, newMethod);
 							ConstPool cp2 = newMethod.getMethodInfo().getConstPool();
 							AnnotationsAttribute newAttribute = new AnnotationsAttribute(cp2, AnnotationsAttribute.visibleTag);
 							modifySqlProviderAnnotation(newMethod, newAttribute, anno, commonSqlProviderClassName, annoClass);
@@ -218,9 +216,9 @@ public class MapperDynamicUtils {
 		return "com.dynamic." + pre;
 	}
 
-	public static void registerCommonMapper(Class<?> beanClazz, BeanDefinitionRegistry registry) {
+	public static void registerCommonMapper(Class<?> beanClazz, BeanDefinitionRegistry registry, Class<?> commonMapperClass, Class<?> commonSqlProviderClass) {
 
-		Class<?> clazz = generateMapperClass(beanClazz, CommonMapper.class);
+		Class<?> clazz = generateMapperClass(beanClazz, commonMapperClass, commonSqlProviderClass);
 		// 通过BeanDefinitionBuilder创建bean定义
 		BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(clazz);
 		// 注册bean

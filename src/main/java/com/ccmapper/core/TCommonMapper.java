@@ -1,6 +1,7 @@
 package com.ccmapper.core;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -42,4 +43,13 @@ public interface TCommonMapper extends CommonMapper<TClass> {
 	@SelectProvider(type = CommonDynamicMapperProvider.class, method = "selectByPropertyEqual")
 	public List<TClass> getListByPropertyEqual(String property, Object value);
 
+	@SelectProvider(type = CommonDynamicMapperProvider.class, method = "selectAll")
+	public List<TClass> getAll();
+	
+	@SelectProvider(type = CommonDynamicMapperProvider.class, method = "selectByPrimaryKey")
+	public Map<String, Object> getMapByPrimaryKey(Object key);
+	
+	@SelectProvider(type = CommonDynamicMapperProvider.class, method = "selectAll")
+	public List<Map<String, Object>> getMapListAll();
+	
 }

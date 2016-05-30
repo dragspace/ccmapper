@@ -89,6 +89,13 @@ public abstract class CommonDynamicMapperProvider extends AbstractSqlProvider{
 		return selectByPropertyEqual(map);
 	}
 	
+	public String selectAll(){
+		BEGIN(); 
+		SELECT(allSelect(clazz));
+		FROM(tableName);
+		return SQL();
+	}
+	
 	public String selectByPropertyEqual(Map<String, Object> parameters){
 		String property = (String)parameters.get("param1");
 		BEGIN(); 

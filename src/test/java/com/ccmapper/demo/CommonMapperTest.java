@@ -24,6 +24,16 @@ public class CommonMapperTest {
 			System.out.println(demo4CommonMapper.getByPropertyEqual("age", 99));
 			System.out.println(demo4CommonMapper.getByPrimaryKey(5L));
 
+			System.out.println(demo4CommonMapper.getMapListAll());
+			System.out.println(demo4CommonMapper.getMapByPrimaryKey(5L).get("id"));
+
+			
+//			Demo4 demo4 = new Demo4();
+//			demo4.setName("我是谁");
+//			
+//			demo4CommonMapper.insert(demo4);
+//			System.out.println(demo4);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
