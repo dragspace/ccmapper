@@ -17,24 +17,11 @@ import org.apache.ibatis.javassist.NotFoundException;
  */
 public class GenericUtils {
 
-	public static CtClass tCommonMapperCtClass;
 	public static ClassPool pool = ClassPool.getDefault();
-	private static String tClassStr = TClass.class.getName().replace(".", "/");
-	private static Map<String, CtMethod> tMapperMethodMap = new HashMap<String, CtMethod>();
 	private static Map<String, Boolean> objectMethod = new HashMap<String, Boolean>();
 	
 	static {
 		try {
-			tCommonMapperCtClass = pool.getCtClass(TCommonMapper.class.getName());
-			for (CtMethod ctMethod : tCommonMapperCtClass.getMethods()) {
-				
-				if(ctMethod.getGenericSignature() != null && ctMethod.getGenericSignature().endsWith("Ljava/lang/Object;")){
-					continue;
-				}
-				
-				tMapperMethodMap.put(ctMethod.getName(), ctMethod);
-			}
-			
 			for (Method ctMethod : Object.class.getMethods()) {
 				objectMethod.put(ctMethod.getName(), true);
 			}
@@ -68,9 +55,8 @@ public class GenericUtils {
 	 * @param beanClass
 	 * @param mapperCtClass
 	 */
-	public static void setTCommonMapperGeneric(Class<?> beanClass, CtClass mapperCtClass) {
-		String tGeneric = tCommonMapperCtClass.getGenericSignature();
-		mapperCtClass.setGenericSignature(getGenericBeanClassString(tGeneric, beanClass));
+	public static void setTCommonMapperGeneric(Class<?> beanClass, CtClass mapperCtClass, Class<?> superMapperClass) {
+		mapperCtClass.setGenericSignature(getMapperGenericString(superMapperClass.getName(), beanClass));
 	}
 
 	/**
@@ -85,21 +71,12 @@ public class GenericUtils {
 
 			// 设置方法返回值泛型
 			String methodName = ctMethod.getName();
-			CtMethod srcTMethod = tMapperMethodMap.get(methodName);
+			CtMethod srcTMethod = getCtMethod(ctMethod.getName(), superMapperClass);
 			if (srcTMethod == null) {
-				throw new RuntimeException("不存在的方法[" + methodName + "] class [" + TCommonMapper.class.getName() + "]");
+				throw new RuntimeException("不存在的方法[" + methodName + "]");
 			}
-			//可以不用设置返回值泛型
-//			CtClass returnType = srcTMethod.getReturnType();
-//			if (returnType.getGenericSignature() != null) {
-//				System.out.println("return [" + returnType.getGenericSignature() +  "]");
-//				ctMethod.getReturnType().setGenericSignature(getGenericBeanClassString(returnType.getGenericSignature(), beanClass));
-//			}
 			// 设置方法泛型
 			if (srcTMethod.getGenericSignature() != null) {
-				System.out.println("--" + getCtMethod(srcTMethod.getName(), superMapperClass).getGenericSignature());
-				System.out.println("src   " + srcTMethod.getName() +" [" +  ctMethod.getGenericSignature() + "]");
-				System.out.println("method "+ srcTMethod.getName() +" [" + getGenericBeanClassString(srcTMethod.getGenericSignature(), beanClass) +  "]");
 				ctMethod.setGenericSignature(getGenericBeanClassString(srcTMethod.getGenericSignature(), beanClass));
 			}
 
@@ -118,8 +95,15 @@ public class GenericUtils {
 		throw new RuntimeException(String.format("没有找到该方法%s, 类 %s", methdoName, ctc.getName()));
 	} 
 
+	public static String getMapperGenericString(String superClassName, Class<?> beanClass){
+		//Ljava/lang/Object;Lcom/ccmapper/custom/CommonMapper<Lcom/ccmapper/core/TClass;>;
+		return String.format("Ljava/lang/Object;L%s<L%s;>;", superClassName.replace(".", "/"), beanClass.getName().replace(".", "/"));
+		
+	}
+	
+	
 	private static String getGenericBeanClassString(String srcGeneric, Class<?> beanClass) {
-		return srcGeneric.replace(tClassStr, beanClass.getName().replace(".", "/"));
+		return srcGeneric.replace("TT", "L" + beanClass.getName().replace(".", "/"));
 	}
 
 }

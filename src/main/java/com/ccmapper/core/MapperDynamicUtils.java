@@ -95,7 +95,7 @@ public class MapperDynamicUtils {
 			pool.insertClassPath(new ClassClassPath(MapperDynamicUtils.class));
 			CtClass superIn = pool.get(commonMapperClass.getName());
 			CtClass ct = pool.makeInterface(generateClassName("ProxyCommonMapper" + beanClazz.getSimpleName()));
-			GenericUtils.setTCommonMapperGeneric(beanClazz, ct);
+			GenericUtils.setTCommonMapperGeneric(beanClazz, ct, commonMapperClass);
 			modifyAnnotation(ct, beanClazz,commonMapperClass, commonSqlProviderClass, superIn);
 			ct.setSuperclass(superIn);
 			return ct.toClass();
