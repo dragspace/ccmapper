@@ -2,6 +2,8 @@ package com.ccmapper.core;
 
 import java.util.Map;
 
+import com.ccmapper.utils.BeanAndTableUtils;
+
 public abstract class AbstractSqlProvider {
 
 	protected Map<String, String> propertyAndColumnMap = null;
@@ -16,7 +18,7 @@ public abstract class AbstractSqlProvider {
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(String.format("构造动态sql提供者类失败 参数 tablename %s classname %s",tableName, className), e);
 		}
-		propertyAndColumnMap = MapperDynamicUtils.getAllPropertyAndColumnMap(clazz);
+		propertyAndColumnMap = BeanAndTableUtils.getAllPropertyAndColumnMap(clazz);
 	}
 	
 	

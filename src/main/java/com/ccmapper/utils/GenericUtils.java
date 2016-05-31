@@ -1,4 +1,4 @@
-package com.ccmapper.core;
+package com.ccmapper.utils;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

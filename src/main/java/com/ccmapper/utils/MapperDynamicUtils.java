@@ -1,10 +1,7 @@
-package com.ccmapper.core;
+package com.ccmapper.utils;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -36,49 +33,6 @@ public class MapperDynamicUtils {
 	 * 需要修改的mybatis注解
 	 */
 	private static List<Class<?>> mybatisProviderList = Arrays.asList(SelectProvider.class, UpdateProvider.class, InsertProvider.class, DeleteProvider.class);
-
-	/**
-	 * @Title: getAllPropertyAndColumnMap
-	 * @Description: 简单获取属性和字段映射
-	 * @author xiaoruihu
-	 * @param clazz
-	 * @return
-	 */
-	public static Map<String, String> getAllPropertyAndColumnMap(Class<?> clazz) {
-
-		Map<String, String> map = new HashMap<String, String>();
-		Field[] fields = clazz.getDeclaredFields();
-
-		for (Field f : fields) {
-			String fileName = f.getName();
-			if ("serialVersionUID".equals(fileName)) {
-				continue;
-			}
-			map.put(fileName, getColumnName(false, fileName));
-		}
-		return map;
-	}
-
-	/**
-	 * @Title: getColumnName
-	 * @Description: TODOo
-	 * @author xiaoruihu
-	 * @param flag
-	 *            true字段 将驼峰改成下划线 false 字段和属性相同
-	 */
-	private static String getColumnName(boolean flag, String str) {
-
-		if (flag) {
-			StringBuilder sb = new StringBuilder();
-			String[] ss = str.split("(?=[A-Z])");
-			for (String s : ss) {
-				sb.append(s.toLowerCase() + "_");
-			}
-			return sb.deleteCharAt(sb.length() - 1).toString();
-		} else {
-			return str;
-		}
-	}
 
 	/**
 	 * @Title: generateMapperClass

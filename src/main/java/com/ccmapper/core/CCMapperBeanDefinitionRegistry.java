@@ -7,6 +7,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 
 import com.ccmapper.custom.CommonDynamicMapperProvider;
 import com.ccmapper.custom.CommonMapper;
+import com.ccmapper.utils.MapperDynamicUtils;
 import com.demo.bean.Demo4;
 
 public class CCMapperBeanDefinitionRegistry implements BeanDefinitionRegistryPostProcessor{
