@@ -19,17 +19,24 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
 import com.ccmapper.core.AbstractSqlProvider;
+import com.ccmapper.core.utils.BeanAndTableUtils;
 
 /**
  * 动态mapper 本类为实现动态的mapper 为基础的table实现增删改查。
  * 
- * @Description: CommonDynamicMapper  可以自己缓存sql 提升性能
+ * @Description: CommonDynamicMapper 可以自己缓存sql 提升性能
  * @author xiaoruihu 2016年5月20日 下午3:14:40
  */
-public abstract class CommonDynamicMapperProvider extends AbstractSqlProvider{
+public abstract class CommonDynamicMapperProvider extends AbstractSqlProvider {
+
+	protected Map<String, String> propertyAndColumnMap = null;
+	protected String tableName;
+	protected final String primaryKey = "id";
 
 	public CommonDynamicMapperProvider(String className) {
 		super(className);
+		this.tableName = this.beanClazz.getSimpleName();
+		propertyAndColumnMap = BeanAndTableUtils.getAllPropertyAndColumnMap(beanClazz);
 	}
 
 	public String insert(Object o) {
@@ -48,18 +55,18 @@ public abstract class CommonDynamicMapperProvider extends AbstractSqlProvider{
 	public String updateNotNullByPrimaryKey(Object o) {
 		return updateAllByPrimaryKey(o, true);
 	}
-	
+
 	private String updateAllByPrimaryKey(Object o, boolean isNotNull) {
 		try {
 			BEGIN();
-			UPDATE(tableName);	       
+			UPDATE(tableName);
 			for (String propertyName : propertyAndColumnMap.keySet()) {
 				String column = propertyAndColumnMap.get(propertyName);
 				if (primaryKey.equals(propertyName)) {
 					WHERE(column + "=#{" + primaryKey + "}");
 				} else {
 					if (isNotNull) {
-						PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(clazz, propertyName);
+						PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(beanClazz, propertyName);
 						Method getMethd = pd.getReadMethod();
 						Object value = getMethd.invoke(o);
 						if (value != null) {
@@ -82,39 +89,39 @@ public abstract class CommonDynamicMapperProvider extends AbstractSqlProvider{
 		}
 		return SQL();
 	}
-	
-	public String selectByPrimaryKey(Object primaryKey){
+
+	public String selectByPrimaryKey(Object primaryKey) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("param1", "id");
 		return selectByPropertyEqual(map);
 	}
-	
-	public String selectAll(){
-		BEGIN(); 
-		SELECT(allSelect(clazz));
+
+	public String selectAll() {
+		BEGIN();
+		SELECT(allSelect(beanClazz));
 		FROM(tableName);
 		return SQL();
 	}
-	
-	public String selectByPropertyEqual(Map<String, Object> parameters){
-		String property = (String)parameters.get("param1");
-		BEGIN(); 
-		SELECT(allSelect(clazz));
-		FROM(tableName);  
+
+	public String selectByPropertyEqual(Map<String, Object> parameters) {
+		String property = (String) parameters.get("param1");
+		BEGIN();
+		SELECT(allSelect(beanClazz));
+		FROM(tableName);
 		WHERE(propertyAndColumnMap.get(property) + "=#{param2}");
 		return SQL();
 	}
-	
-	private String allSelect(Class<?> clazz){
+
+	private String allSelect(Class<?> clazz) {
 		StringBuilder selectSB = new StringBuilder();
-		for(String property : propertyAndColumnMap.keySet()){
+		for (String property : propertyAndColumnMap.keySet()) {
 			selectSB.append(propertyAndColumnMap.get(property));
 			selectSB.append(" as ");
 			selectSB.append(property);
 			selectSB.append(",");
 		}
 		selectSB.deleteCharAt(selectSB.length() - 1);
-		
+
 		return selectSB.toString();
 	}
 
