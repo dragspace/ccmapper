@@ -2,7 +2,7 @@ package com.ccmapper.core;
 
 import java.util.Map;
 
-import com.ccmapper.utils.BeanAndTableUtils;
+import com.ccmapper.core.utils.BeanAndTableUtils;
 
 public abstract class AbstractSqlProvider {
 

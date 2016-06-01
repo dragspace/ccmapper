@@ -1,4 +1,4 @@
-package com.ccmapper.utils;
+package com.ccmapper.core.utils;
 
 import java.util.Arrays;
 import java.util.List;

@@ -25,5 +25,5 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
     
-    <bean class="com.ccmapper.core.CCMapperBeanDefinitionRegistry"></bean>
+    <bean class="com.ccmapper.custom.CustomBeanDefinitionRegistry"></bean>
 </beans>
