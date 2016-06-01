@@ -15,14 +15,18 @@
         <property name="username" value="${jdbc.user}" />
         <property name="password" value="${jdbc.password}" />
     </bean>
+    
+    <!-- 注意这个bean一定要叫这个名字 写死了。。。不想在传递多余的参数了 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="configLocation" value="classpath:mybatis-config.xml" />
     </bean>
+    <!-- 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.demo.mapper" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
+     -->
     <!-- <bean class="com.ccmapper.custom.CustomBeanDefinitionRegistry"></bean> -->
     
     
