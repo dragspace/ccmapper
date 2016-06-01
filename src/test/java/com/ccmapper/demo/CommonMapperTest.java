@@ -8,6 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ccmapper.custom.CommonMapper;
+import com.demo.bean.Demo;
 import com.demo.bean.Demo4;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -16,6 +17,9 @@ public class CommonMapperTest {
 
 	@Autowired
 	private CommonMapper<Demo4> demo4CommonMapper;
+	
+	@Autowired
+	private CommonMapper<Demo> demoCommonMapper;
 
 	@Test
 	public void testGetByPrimaryKey() {
@@ -27,7 +31,7 @@ public class CommonMapperTest {
 			System.out.println(demo4CommonMapper.getMapListAll());
 			System.out.println(demo4CommonMapper.getMapByPrimaryKey(5L).get("id"));
 
-			
+			System.out.println(demoCommonMapper.getAll());
 //			Demo4 demo4 = new Demo4();
 //			demo4.setName("我是谁");
 //			

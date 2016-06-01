@@ -57,6 +57,6 @@ public class Demo3{
 	
 	@Override
 	public String toString() {
-		return "Demo4 [id=" + id + ", name=" + name + ", sex=" + sex + ", age=" + age + "]";
+		return "Demo3 [id=" + id + ", name=" + name + ", sex=" + sex + ", age=" + age + "]";
 	}
 }
