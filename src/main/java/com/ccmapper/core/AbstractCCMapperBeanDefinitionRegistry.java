@@ -1,6 +1,6 @@
 package com.ccmapper.core;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -24,11 +24,15 @@ public abstract class AbstractCCMapperBeanDefinitionRegistry implements BeanDefi
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
 
-		List<Class<?>> beanClassList = this.getBeanList();
-		if (CollectionUtils.isEmpty(beanClassList)) {
+		Collection<Class<?>> beanClassCollection = this.getBeanList();
+		if (CollectionUtils.isEmpty(beanClassCollection)) {
 			return;
 		}
-		for (Class<?> clazz : beanClassList) {
+		
+		if(getCommonMapper() == null || getSqlProvider() == null){
+			throw new NullPointerException(this.getClass().getName() + "的beanClasssName和sqlProvider 不能为空");
+		}
+		for (Class<?> clazz : beanClassCollection) {
 			MapperDynamicUtils.registerCommonMapper(clazz, registry, getCommonMapper(), getSqlProvider());
 		}
 	}
@@ -39,7 +43,7 @@ public abstract class AbstractCCMapperBeanDefinitionRegistry implements BeanDefi
 	 * @author xiaoruihu
 	 * @return
 	 */
-	public abstract List<Class<?>> getBeanList();
+	public abstract Collection<Class<?>> getBeanList();
 
 	/**
 	 * @Title: getCommonMapper

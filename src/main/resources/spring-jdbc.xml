@@ -8,7 +8,6 @@
    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd  
    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd  
    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
-    
     <context:property-placeholder location="classpath:config.properties" />
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${jdbc.driverClass}" />
@@ -24,6 +23,20 @@
         <property name="basePackage" value="com.demo.mapper" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
+    <!-- <bean class="com.ccmapper.custom.CustomBeanDefinitionRegistry"></bean> -->
     
-    <bean class="com.ccmapper.custom.CustomBeanDefinitionRegistry"></bean>
+    
+    <!-- baseBeanPackage和beanClasssList可以配合使用也可以单独使用 2项必填一项 -->
+    <bean class="com.ccmapper.core.CommonBeanDefinitionRegistry">
+        <property name="baseBeanPackage" value="com.demo.bean"></property>
+        <property name="beanClasssList">
+            <list>
+                <value>com.demo.bean.Demo4</value>
+                <value>com.demo.bean.Demo</value>
+            </list>
+        </property>
+        <!-- commonMapper和sqlProvider必填 -->
+        <property name="commonMapper" value="com.ccmapper.custom.CommonMapper"></property>
+        <property name="sqlProvider" value="com.ccmapper.custom.CommonDynamicMapperProvider"></property>
+    </bean>
 </beans>
