@@ -1,25 +1,30 @@
 package com.ccmapper.custom;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import java.util.Arrays;
+import java.util.List;
 
 import com.ccmapper.core.AbstractCCMapperBeanDefinitionRegistry;
-import com.ccmapper.core.utils.MapperDynamicUtils;
+import com.demo.bean.Demo;
+import com.demo.bean.Demo2;
 import com.demo.bean.Demo4;
 
-public class CustomBeanDefinitionRegistry extends AbstractCCMapperBeanDefinitionRegistry{
-	
+public class CustomBeanDefinitionRegistry extends AbstractCCMapperBeanDefinitionRegistry {
+
 	private Class<?> defaultSqlProvider = CommonDynamicMapperProvider.class;
 	private Class<?> defaultCommonMapper = CommonMapper.class;
-	
+
 	@Override
-	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-		//MapperDynamicUtils.registerCommonMapper(Demo.class, registry, CommonMapper.class, CommonDynamicMapperProvider.class);
-        MapperDynamicUtils.registerCommonMapper(Demo4.class, registry, defaultCommonMapper, defaultSqlProvider);
-        
+	public List<Class<?>> getBeanList() {
+		return Arrays.asList(Demo.class, Demo2.class, Demo4.class);
 	}
 
-	public Class<?> getDefaultSqlProvider() {
+	@Override
+	public Class<?> getCommonMapper() {
+		return defaultCommonMapper;
+	}
+
+	@Override
+	public Class<?> getSqlProvider() {
 		return defaultSqlProvider;
 	}
 
@@ -27,11 +32,8 @@ public class CustomBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 		this.defaultSqlProvider = defaultSqlProvider;
 	}
 
-	public Class<?> getDefaultCommonMapper() {
-		return defaultCommonMapper;
-	}
-
 	public void setDefaultCommonMapper(Class<?> defaultCommonMapper) {
 		this.defaultCommonMapper = defaultCommonMapper;
 	}
+
 }

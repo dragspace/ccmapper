@@ -18,7 +18,7 @@
 		<setting name="useGeneratedKeys" value="true" />
 		<!-- 给予被嵌套的resultMap以字段-属性的映射支持 -->
 		<setting name="autoMappingBehavior" value="FULL" />
-		<!-- 对于批量更新操作缓存SQL以提高性能  "BATCH" "SIMPLE" -->
+		<!-- 对于批量更新操作缓存SQL以提高性能  "BATCH" "SIMPLE" 这个必须指定为simple  否则mysql自增主键将无法获取 -->
 		<setting name="defaultExecutorType" value="SIMPLE" />
          <!-- 设置本地缓存范围 session:就会有数据的共享 statement:语句范围 (这样就不会有数据的共享 ) defalut:session -->
         <setting name="localCacheScope" value="STATEMENT" />

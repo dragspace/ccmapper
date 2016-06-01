@@ -15,15 +15,23 @@ import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.ClassUtils;
 
+
+/**
+ * @Description: ScannerUtils  一个扫描工具类
+ * @author xiaoruihu 2016年6月1日 上午11:27:15
+ */
 public class ScannerUtils {
 
+	/**
+	 * 默认包递归
+	 */
 	private static final String RESOURCE_PATTERN = "/**/*.class";
 
 	private static ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
 	/**
 	 * @Title: getClassSetAnnotation
-	 * @Description: 将符合条件的class 注解
+	 * @Description: 获取拥有指定注解的class
 	 * @author xiaoruihu
 	 * @param basePackage
 	 * @param annotation
@@ -35,7 +43,7 @@ public class ScannerUtils {
 
 	/**
 	 * @Title: getClassSetSuperClass
-	 * @Description: 将符合条件的class 子类
+	 * @Description: 获取拥有指定父类或者父接口的 子类 (本方法自动去除父类)
 	 * @author xiaoruihu
 	 * @param basePackage
 	 * @param superClazz
@@ -49,7 +57,7 @@ public class ScannerUtils {
 
 	/**
 	 * @Title: getClassSet
-	 * @Description: 获取指定报下所有的类
+	 * @Description: 获取指定包下的所有类 
 	 * @author xiaoruihu
 	 * @param basePackage
 	 * @return
@@ -58,6 +66,14 @@ public class ScannerUtils {
 		return getClassSet(basePackage, null);
 	}
 
+	/**
+	 * @Title: getClassSet 
+	 * @Description: 注意这个是包递归
+	 * @author xiaoruihu
+	 * @param basePackage
+	 * @param tf
+	 * @return
+	 */
 	private static Set<Class<?>> getClassSet(String basePackage, TypeFilter tf) {
 		Set<Class<?>> classSet = new HashSet<Class<?>>();
 		try {
