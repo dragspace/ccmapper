@@ -29,8 +29,8 @@
      -->
     <!-- <bean class="com.ccmapper.custom.CustomBeanDefinitionRegistry"></bean> -->
     
-    
-    <!-- baseBeanPackage和beanClasssList可以配合使用也可以单独使用 2项必填一项 -->
+    <!-- commonMapper和sqlProvider必填 -->
+    <!-- baseBeanPackage和beanClasssList可以配合使用也可以单独使用 2项必填一项  -->
     <bean class="com.ccmapper.core.CommonBeanDefinitionRegistry">
         <property name="baseBeanPackage" value="com.demo.bean"></property>
         <property name="beanClasssList">
@@ -39,8 +39,18 @@
                 <value>com.demo.bean.Demo</value>
             </list>
         </property>
-        <!-- commonMapper和sqlProvider必填 -->
+        
         <property name="commonMapper" value="com.ccmapper.custom.CommonMapper"></property>
         <property name="sqlProvider" value="com.ccmapper.custom.CommonDynamicMapperProvider"></property>
     </bean>
+   
+    
+    <!-- baseBeanPackage和beanClasssList可以配合使用也可以单独使用 2项必填一项 -->
+    <bean class="com.ccmapper.core.CommonBeanDefinitionRegistry">
+        <property name="baseBeanPackage" value="com.demo.annobean"></property>
+        <!-- commonMapper和sqlProvider必填 -->
+        <property name="commonMapper" value="com.ccmapper.customanno.CustomerAnnoMapper"></property>
+        <property name="sqlProvider" value="com.ccmapper.customanno.CustomannoDynamicMapperSqlProvider"></property>
+    </bean>
+    
 </beans>

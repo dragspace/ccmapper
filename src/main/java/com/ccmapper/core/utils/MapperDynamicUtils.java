@@ -24,8 +24,6 @@ import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 
-import com.ccmapper.custom.CommonDynamicMapperProvider;
-
 
 public class MapperDynamicUtils {
 
@@ -67,7 +65,7 @@ public class MapperDynamicUtils {
 	private static void modifyAnnotation(CtClass ctChild, Class<?> beanClazz, Class<?> commonMapperClass, Class<?> commonSqlProviderClass, CtClass superMapperCtClass) {
 
 		CtMethod[] ctMethods = GenericUtils.getCtClass(commonMapperClass).getMethods();
-		String commonSqlProviderClassName = generateSqlProvider(beanClazz).getName();
+		Class<?> customCommonSqlProviderClass = generateSqlProvider(beanClazz, commonSqlProviderClass);
 		for (CtMethod ctMethod : ctMethods) {
 			if (GenericUtils.isObjectMethod(ctMethod.getName())) {
 				continue;
@@ -93,7 +91,7 @@ public class MapperDynamicUtils {
 						if (anno != null) {
 							ConstPool cp2 = newMethod.getMethodInfo().getConstPool();
 							AnnotationsAttribute newAttribute = new AnnotationsAttribute(cp2, AnnotationsAttribute.visibleTag);
-							modifySqlProviderAnnotation(newMethod, newAttribute, anno, commonSqlProviderClassName, annoClass);
+							modifySqlProviderAnnotation(newMethod, newAttribute, anno, commonSqlProviderClass, customCommonSqlProviderClass, annoClass);
 							newMethod.getMethodInfo().addAttribute(newAttribute);
 							break;
 						} 
@@ -119,20 +117,20 @@ public class MapperDynamicUtils {
 	 * @param ctChild
 	 * @param annoClass
 	 */
-	private static void modifySqlProviderAnnotation(CtMethod newMethod, AnnotationsAttribute newAnnoAttr, Annotation anno, String commonSqlProviderClassName,
+	private static void modifySqlProviderAnnotation(CtMethod newMethod, AnnotationsAttribute newAnnoAttr, Annotation anno, Class<?> commonSqlProviderClass,Class<?> customerCommonSqlProviderClass,
 			Class<?> annoClass) {
 		if (anno == null) {
 			return;
 		}
 		ClassMemberValue cmv = (ClassMemberValue) anno.getMemberValue("type");
 		// 判断是否为需要换取的注解
-		if (CommonDynamicMapperProvider.class.getName().equals(cmv.getValue())) {
+		if (commonSqlProviderClass.getName().equals(cmv.getValue())) {
 			StringMemberValue methodStr = (StringMemberValue) anno.getMemberValue("method");
 			MethodInfo newMethodInfo = newMethod.getMethodInfo();
 			ConstPool cp2 = newMethodInfo.getConstPool();
 			Annotation annotation = new Annotation(annoClass.getName(), cp2);
 			annotation.addMemberValue("method", new StringMemberValue(methodStr.getValue(), cp2));
-			annotation.addMemberValue("type", new ClassMemberValue(commonSqlProviderClassName, cp2));
+			annotation.addMemberValue("type", new ClassMemberValue(customerCommonSqlProviderClass.getName(), cp2));
 			newAnnoAttr.addAnnotation(annotation);
 		}
 	}
@@ -144,9 +142,9 @@ public class MapperDynamicUtils {
 	 * @param beanClass
 	 * @return
 	 */
-	private static Class<?> generateSqlProvider(Class<?> beanClass) {
+	private static Class<?> generateSqlProvider(Class<?> beanClass, Class<?> superSqlProviderClass) {
 		try {
-			Class<?> superClass = CommonDynamicMapperProvider.class;
+			Class<?> superClass = superSqlProviderClass;
 			String genString = "<L" + beanClass.getName().replace(".", "/") + ";>";
 			String beseString = "L" + superClass.getName().replace(".", "/");
 			ClassPool pool = ClassPool.getDefault();
