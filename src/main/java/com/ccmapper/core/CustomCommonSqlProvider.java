@@ -101,7 +101,7 @@ public class CustomCommonSqlProvider extends AbstractSqlProvider {
 		return SQL();
 	}
 
-	private String allSelect(Class<?> clazz) {
+	public String allSelect(Class<?> clazz) {
 		StringBuilder selectSB = new StringBuilder();
 		for (String property : propertyAndColumnMap.keySet()) {
 			selectSB.append(propertyAndColumnMap.get(property));

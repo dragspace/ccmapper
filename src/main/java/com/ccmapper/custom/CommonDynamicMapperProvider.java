@@ -1,6 +1,13 @@
 package com.ccmapper.custom;
 
+import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
+import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
+import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
+import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
+import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
+
 import com.ccmapper.core.CustomCommonSqlProvider;
+import com.ccmapper.core.example.Example;
 import com.ccmapper.core.utils.BeanAndTableUtils;
 
 /**
@@ -17,4 +24,16 @@ public abstract class CommonDynamicMapperProvider extends CustomCommonSqlProvide
 		propertyAndColumnMap = BeanAndTableUtils.getAllPropertyAndColumnMap(beanClazz);
 	}
 
+	public String getListByExample(Example example){
+		BEGIN();
+		SELECT(allSelect(beanClazz));
+		FROM(tableName);
+		
+		WHERE(example.generateWhereSql(propertyAndColumnMap));
+		String sql = SQL();
+		System.out.println(sql);
+		return sql;
+		
+	}
+	
 }

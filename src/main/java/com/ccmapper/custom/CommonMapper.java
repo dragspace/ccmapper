@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
+import com.ccmapper.core.example.Example;
+
 public interface CommonMapper<T> {
 
 	@InsertProvider(type = CommonDynamicMapperProvider.class, method = "insert")
@@ -35,5 +37,10 @@ public interface CommonMapper<T> {
 	
 	@SelectProvider(type = CommonDynamicMapperProvider.class, method = "selectAll")
 	public List<Map<String, Object>> getMapListAll();
+	
+	@SelectProvider(type = CommonDynamicMapperProvider.class, method = "getListByExample")
+	public List<T> getListByExample(Example example);
+	
+	
 
 }
