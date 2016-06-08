@@ -103,7 +103,7 @@ public class GenericUtils {
 	
 	
 	private static String getGenericBeanClassString(String srcGeneric, Class<?> beanClass) {
-		return srcGeneric.replace("TT", "L" + beanClass.getName().replace(".", "/"));
+		return srcGeneric.replace("TT;", "L" + beanClass.getName().replace(".", "/") + ";");
 	}
 
 }
