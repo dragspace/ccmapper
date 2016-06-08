@@ -13,6 +13,7 @@ public class CustomBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 	private Class<?> defaultSqlProvider = CommonDynamicMapperProvider.class;
 	private Class<?> defaultCommonMapper = CommonMapper.class;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Class<?>> getBeanList() {
 		return Arrays.asList(Demo.class, Demo2.class, Demo4.class);

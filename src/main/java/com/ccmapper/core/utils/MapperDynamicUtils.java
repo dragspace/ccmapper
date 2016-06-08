@@ -1,6 +1,6 @@
 package com.ccmapper.core.utils;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.DeleteProvider;
@@ -30,8 +30,17 @@ public class MapperDynamicUtils {
 	/**
 	 * 需要修改的mybatis注解
 	 */
-	private static List<Class<?>> mybatisProviderList = Arrays.asList(SelectProvider.class, UpdateProvider.class, InsertProvider.class, DeleteProvider.class);
-
+	private static List<Class<?>> mybatisProviderList;
+	static{
+		//Arrays.asList(SelectProvider.class, UpdateProvider.class, InsertProvider.class, DeleteProvider.class);
+		mybatisProviderList = new ArrayList<Class<?>>();
+		mybatisProviderList.add(SelectProvider.class);
+		mybatisProviderList.add(UpdateProvider.class);
+		mybatisProviderList.add(InsertProvider.class);
+		mybatisProviderList.add(DeleteProvider.class);
+		
+		
+	}
 	/**
 	 * @Title: generateMapperClass
 	 * @Description: 生成代理接口类

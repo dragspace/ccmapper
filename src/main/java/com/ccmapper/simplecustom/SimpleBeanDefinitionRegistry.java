@@ -1,7 +1,8 @@
 package com.ccmapper.simplecustom;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.ccmapper.core.AbstractCCMapperBeanDefinitionRegistry;
 import com.demo.bean.Demo;
@@ -10,7 +11,9 @@ public class SimpleBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 
 	@Override
 	public Collection<Class<?>> getBeanList() {
-		return Arrays.asList(Demo.class);
+		List<Class<?>> list = new ArrayList<Class<?>>();
+		list.add(Demo.class);
+		return list;
 	}
 
 	@Override
