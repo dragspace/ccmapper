@@ -53,4 +53,6 @@
         <property name="sqlProvider" value="com.ccmapper.customanno.CustomannoDynamicMapperSqlProvider"></property>
     </bean>
     
+    
+    <bean class="com.ccmapper.simplecustom.SimpleBeanDefinitionRegistry"></bean>
 </beans>
