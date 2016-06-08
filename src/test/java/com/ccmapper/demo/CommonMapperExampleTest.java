@@ -9,9 +9,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ccmapper.core.example.Example;
 import com.ccmapper.custom.CommonMapper;
-import com.ccmapper.customanno.CustomerAnnoMapper;
-import com.demo.annobean.Demo4Entity;
-import com.demo.bean.Demo;
 import com.demo.bean.Demo4;
 
 @RunWith(SpringJUnit4ClassRunner.class)
