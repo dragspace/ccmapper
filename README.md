@@ -2,7 +2,13 @@
 > - 用来自定义通过mapper的工具集    参考了 mapper插件的API。。。 
 
 ## 自定义commonMapper 
-> - 具体例子看simplecustom包
+> - core 核心包 
+> - 3个custom包   扩展查询包
+> > - custom bean属性和字段一致 bean名就是表明 
+> > - customanno javax.persistence  注解映射
+> > - customsimple  最简单的例子  
+
+> - demo 样例bean包
 
 ## 限制 
 > - 返回值类型目前只支持T 和Map， 注意泛型只能指定为T

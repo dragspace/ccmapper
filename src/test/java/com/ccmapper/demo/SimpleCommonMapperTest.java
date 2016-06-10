@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.ccmapper.simplecustom.SimpleCommonMapper;
+import com.ccmapper.customsimple.SimpleCommonMapper;
 import com.demo.bean.Demo;
 
 @RunWith(SpringJUnit4ClassRunner.class)

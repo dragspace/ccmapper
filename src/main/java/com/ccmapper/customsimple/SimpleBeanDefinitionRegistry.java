@@ -1,4 +1,4 @@
-package com.ccmapper.simplecustom;
+package com.ccmapper.customsimple;
 
 import java.util.ArrayList;
 import java.util.Collection;

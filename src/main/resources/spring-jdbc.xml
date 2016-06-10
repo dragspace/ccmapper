@@ -54,5 +54,5 @@
     </bean>
     
     
-    <bean class="com.ccmapper.simplecustom.SimpleBeanDefinitionRegistry"></bean>
+    <bean class="com.ccmapper.customsimple.SimpleBeanDefinitionRegistry"></bean>
 </beans>
