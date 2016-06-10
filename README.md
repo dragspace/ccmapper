@@ -1,5 +1,5 @@
 # ccmapper
-	用来自定义通过mapper的工具集
+	用来自定义通过mapper的工具集    参考了 mapper插件的API。。。 
 ==========================================	
 ## 自定义commonMapper 
 	具体例子看simplecustom包

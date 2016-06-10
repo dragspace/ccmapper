@@ -5,5 +5,5 @@ package com.ccmapper.core.example;
  * @author xiaoruihu 2016年6月6日 下午5:45:15
  */
 public  interface GenerateSql{
-	public String generate(SqlSign sqlSign, String columnName, int index);
+	public String generate(SqlSign sqlSign, String columnName, int index, int valuesSize);
 }

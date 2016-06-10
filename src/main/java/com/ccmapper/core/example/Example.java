@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ccmapper.core.utils.CCStringUtils;
+
 /**
  * 通用的Example查询对象
  *
@@ -130,13 +132,25 @@ public class Example extends HashMap<String, Object>{
 		return this;
 	}
 
-	public Criteria or() {
+	/**
+	 * @Title: orCriteria 
+	 * @Description: 注意这个每次调用都会返回一个新的实例
+	 * @author xiaoruihu
+	 * @return
+	 */
+	public Criteria orCriteria() {
 		Criteria criteria = createCriteriaInternal();
 		orCriteriaList.add(criteria);
 		return criteria;
 	}
 
-	public Criteria createAndCriteria() {
+	/**
+	 * @Title: andCriteria 
+	 * @Description: 这个只会返回   唯一一个实例
+	 * @author xiaoruihu
+	 * @return
+	 */
+	public Criteria andCriteria() {
 		if (this.andCriteria == null) {
 			this.andCriteria = createCriteriaInternal();
 		}
@@ -164,7 +178,7 @@ public class Example extends HashMap<String, Object>{
 			}
 		}
 		if(this.andCriteria == null){
-			whereSB.delete(whereSB.length() - ExampleConstant.OR.length(), whereSB.length());
+			CCStringUtils.deleteEnd(whereSB, ExampleConstant.OR);
 		}
 		
 		return whereSB.toString();
@@ -181,7 +195,6 @@ public class Example extends HashMap<String, Object>{
 
 	@Override
 	public Object get(Object key) {
-		System.out.println(key);
 		return this.params.get(Integer.parseInt(key.toString()));
 	}
 
@@ -195,7 +208,7 @@ public class Example extends HashMap<String, Object>{
 			criterionList = new ArrayList<Criterion>();
 		}
 
-		public boolean isMany() {
+		protected boolean isMany() {
 			return criterionList.size() > 1;
 		}
 
@@ -205,15 +218,16 @@ public class Example extends HashMap<String, Object>{
 				sb.append(c.generateSql(propertyAndColumnMap, params));
 				sb.append(ExampleConstant.AND);
 			}
-			return sb.delete(sb.length() - ExampleConstant.AND.length(), sb.length()).toString();
+			
+			return CCStringUtils.deleteEnd(sb, ExampleConstant.AND).toString();
 		}
 		
 		
-		protected void addCriterion(SqlSign sqlSign, String property) {
-			if (property == null) {
+		protected void addCriterion(SqlSign sqlSign, String propertyName) {
+			if (propertyName == null) {
 				return;
 			}
-			criterionList.add(new Criterion(sqlSign, property));
+			criterionList.add(new Criterion(sqlSign, propertyName));
 		}
 
 		protected void addCriterion(SqlSign sqlSign, String propertyName, Object value) {
@@ -230,18 +244,18 @@ public class Example extends HashMap<String, Object>{
 			criterionList.add(new Criterion(sqlSign, propertyName, value));
 		}
 
-		protected void addCriterion(SqlSign sqlSign, String property, Object value1, Object value2) {
+		protected void addCriterion(SqlSign sqlSign, String propertyName, Object value1, Object value2) {
 			if (value1 == null || value2 == null) {
 				if (notNull) {
-					throw new RuntimeException("Between values for " + property + " cannot be null");
+					throw new RuntimeException("Between values for " + propertyName + " cannot be null");
 				} else {
 					return;
 				}
 			}
-			if (property == null) {
+			if (propertyName == null) {
 				return;
 			}
-			criterionList.add(new Criterion(sqlSign, property, value1, value2));
+			criterionList.add(new Criterion(sqlSign, propertyName, value1, value2));
 		}
 
 		public Criteria andIsNull(String propertyName) {
@@ -254,57 +268,57 @@ public class Example extends HashMap<String, Object>{
 			return this;
 		}
 
-		public Criteria andEqualTo(String property, Object value) {
+		public Criteria equalTo(String property, Object value) {
 			return andSqlSign(SqlSign.EqualTo, property, value);
 		}
 
-		public Criteria andNotEqualTo(String property, Object value) {
+		public Criteria notEqualTo(String property, Object value) {
 			return andSqlSign(SqlSign.NotEqualTo, property, value);
 		}
 
-		public Criteria andGreaterThan(String property, Object value) {
+		public Criteria greaterThan(String property, Object value) {
 			return andSqlSign(SqlSign.GreaterThan, property, value);
 		}
 
-		public Criteria andGreaterThanOrEqualTo(String property, Object value) {
+		public Criteria greaterThanOrEqualTo(String property, Object value) {
 			return andSqlSign(SqlSign.GreaterThanOrEqualTo, property, value);
 		}
 
-		public Criteria andLessThan(String property, Object value) {
+		public Criteria lessThan(String property, Object value) {
 			return andSqlSign(SqlSign.LessThan, property, value);
 		}
 
-		public Criteria andLessThanOrEqualTo(String property, Object value) {
+		public Criteria lessThanOrEqualTo(String property, Object value) {
 			return andSqlSign(SqlSign.LessThanOrEqualTo, property, value);
 		}
 
-		public Criteria andIn(String property, Collection<?> values) {
+		public Criteria in(String property, Collection<?> values) {
 			return andSqlSign(SqlSign.In, property, values);
 		}
 
-		public Criteria andNotIn(String property, Collection<?> values) {
+		public Criteria notIn(String property, Collection<?> values) {
 			return andSqlSign(SqlSign.NotIn, property, values);
 		}
 
-		public Criteria andBetween(String property, Object value1, Object value2) {
+		public Criteria between(String property, Object value1, Object value2) {
 			addCriterion(SqlSign.Between, property, value1, value2);
 			return this;
 		}
 
-		public Criteria andNotBetween(String property, Object value1, Object value2) {
+		public Criteria notBetween(String property, Object value1, Object value2) {
 			addCriterion(SqlSign.NotBetween, property, value1, value2);
 			return this;
 		}
 
-		public Criteria andLike(String property, String value) {
+		public Criteria like(String property, String value) {
 			return andSqlSign(SqlSign.Like, property, value);
 		}
 
-		public Criteria andNotLike(String property, String value) {
+		public Criteria notLike(String property, String value) {
 			return andSqlSign(SqlSign.NotLike, property, value);
 		}
 
-		public Criteria andSqlSign(SqlSign sqlSign, String propertyName, Object value) {
+		private Criteria andSqlSign(SqlSign sqlSign, String propertyName, Object value) {
 			addCriterion(sqlSign, propertyName, value);
 			return this;
 		}
@@ -320,20 +334,24 @@ public class Example extends HashMap<String, Object>{
 		private String propertyName;
 		private Object value;
 		private Object secondValue;
+		private boolean isCollection = false;
 
 		protected Criterion(SqlSign sqlSign, String propertyName) {
+			this.propertyName = propertyName;
 			this.sqlSign = sqlSign;
 		}
 
 		protected Criterion(SqlSign sqlSign, String propertyName, Object value) {
-			this.propertyName = propertyName;
-			this.sqlSign = sqlSign;
+			this(sqlSign, propertyName);
 			this.value = value;
+			
+			if(value instanceof Collection){
+				isCollection = true;
+			}
 		}
 
 		protected Criterion(SqlSign sqlSign, String propertyName, Object value, Object secondValue) {
-			this.propertyName = propertyName;
-			this.sqlSign = sqlSign;
+			this(sqlSign, propertyName);
 			this.value = value;
 			this.secondValue = secondValue;
 		}
@@ -341,13 +359,18 @@ public class Example extends HashMap<String, Object>{
 		String generateSql(Map<String, String> propertyAndColumnMap, List<Object> params) {
 			
 			int index = params.size();
-			if(this.value != null){
-				params.add(this.value);
-				if(this.secondValue != null){
-					params.add(this.secondValue);
+			if(isCollection){
+				params.addAll((Collection<?>)this.value);
+			}else{
+				if(this.value != null){
+					params.add(this.value);
+					if(this.secondValue != null){
+						params.add(this.secondValue);
+					}
 				}
 			}
-			return this.sqlSign.getCondition(propertyAndColumnMap.get(this.propertyName), index);
+			
+			return this.sqlSign.getCondition(propertyAndColumnMap.get(this.propertyName), index, params.size() - index);
 		}
 	}
 }
