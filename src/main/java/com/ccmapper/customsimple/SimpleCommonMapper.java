@@ -8,5 +8,8 @@ public interface SimpleCommonMapper<T> {
 	@SelectProvider(type = SimpleMapperSqlProvider.class, method = "getAgeById")
 	public String getAgeById(Object key);
 
+	
+	@SelectProvider(type = SimpleMapperSqlProvider.class, method = "getById")
+	public T getById(Object key);
 
 }

@@ -19,6 +19,7 @@ public class SimpleCommonMapperTest {
 	@Test
 	public void test(){
 		System.out.println(simpleCommonMapper.getAgeById(1));
+		System.out.println(simpleCommonMapper.getById(1));
 	}
 
 }
