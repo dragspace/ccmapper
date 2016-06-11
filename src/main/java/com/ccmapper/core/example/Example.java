@@ -106,12 +106,8 @@ public class Example extends HashMap<String, Object>{
 		 * @param aliasTableName
 		 * @return
 		 */
-		String generateOrderSql(String aliasTableName) {
-			if (aliasTableName == null) {
-				return this.propertyName + this.ascOrDesc;
-			} else {
-				return aliasTableName + "." + this.propertyName + this.ascOrDesc;
-			}
+		protected String generateOrderSql(Map<String, String> propertyAndColumnMap) {
+			return propertyAndColumnMap.get(this.propertyName) + this.ascOrDesc;
 		}
 	}
 
@@ -160,28 +156,44 @@ public class Example extends HashMap<String, Object>{
 	protected Criteria createCriteriaInternal() {
 		return new Criteria(notNull);
 	}
-	
+	              	
 	public String generateWhereSql(Map<String, String> propertyAndColumnMap){
 		
-		StringBuilder whereSB = new StringBuilder();
+		StringBuilder whereSqlSB = new StringBuilder();
 		
 		if(this.andCriteria != null){
-			whereSB.append(this.andCriteria.generateSql(propertyAndColumnMap, params));
+			whereSqlSB.append(this.andCriteria.generateSql(propertyAndColumnMap, params));
 		}
 		
 		for(Criteria c : this.orCriteriaList){
-			whereSB.append(ExampleConstant.OR);
+			whereSqlSB.append(ExampleConstant.OR);
 			if(c.isMany()){
-				whereSB.append("(" + c.generateSql(propertyAndColumnMap, params) +")");
+				whereSqlSB.append("(" + c.generateSql(propertyAndColumnMap, params) +")");
 			}else{
-				whereSB.append(c.generateSql(propertyAndColumnMap, params));
+				whereSqlSB.append(c.generateSql(propertyAndColumnMap, params));
 			}
 		}
-		if(this.andCriteria == null){
-			CCStringUtils.deleteEnd(whereSB, ExampleConstant.OR);
+		if(this.andCriteria == null && !this.orCriteriaList.isEmpty()){
+			CCStringUtils.deleteEnd(whereSqlSB, ExampleConstant.OR);
 		}
 		
-		return whereSB.toString();
+		
+		return whereSqlSB.toString();
+	}
+	
+	public String generateOrderBysql(Map<String, String> propertyAndColumnMap){
+		
+		if(!this.orderByList.isEmpty()){
+			StringBuilder orderBySqlSB = new StringBuilder();
+			
+			for(OrderBy orderBy : this.orderByList){
+				orderBySqlSB.append(orderBy.generateOrderSql(propertyAndColumnMap));
+				orderBySqlSB.append(",");
+			}
+			CCStringUtils.deleteEnd(orderBySqlSB, ",");
+			return orderBySqlSB.toString();
+		}
+		return null;
 	}
 	
 	public String generateOrderSql(Map<String, String> propertyAndColumnMap){

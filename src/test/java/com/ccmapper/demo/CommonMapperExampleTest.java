@@ -33,8 +33,8 @@ public class CommonMapperExampleTest {
 			Example e = new Example(false);
 			Criteria and = e.andCriteria();
 			and.equalTo("name", "我是谁");
-			//c.notIn("age", Arrays.asList(20, 30));
-			and.lessThanOrEqualTo("age", 30);
+//			//c.notIn("age", Arrays.asList(20, 30));
+//			and.lessThanOrEqualTo("age", 30);
 			
 			//and.andIsNotNull("sex");
 			
@@ -45,6 +45,8 @@ public class CommonMapperExampleTest {
 			Criteria or2 = e.orCriteria();
 			or2.equalTo("name", "abc");
 			or2.equalTo("age", "120");
+			
+			e.orderBy("id").desc();
 			
 			printList(demo4CommonMapper.getListByExample(e));
 		} catch (Exception e) {

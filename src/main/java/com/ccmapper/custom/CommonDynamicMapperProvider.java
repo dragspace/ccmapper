@@ -5,6 +5,7 @@ import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
 import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
 import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
+import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
 
 import com.ccmapper.core.CustomCommonSqlProvider;
 import com.ccmapper.core.example.Example;
@@ -29,7 +30,16 @@ public abstract class CommonDynamicMapperProvider extends CustomCommonSqlProvide
 		SELECT(allSelect(beanClazz));
 		FROM(tableName);
 		
-		WHERE(example.generateWhereSql(propertyAndColumnMap));
+		String whereSql = example.generateWhereSql(propertyAndColumnMap);
+		if(whereSql != null){
+			WHERE(whereSql);
+		}
+		
+		String orderByString = example.generateOrderBysql(propertyAndColumnMap);
+		if(orderByString != null){
+			ORDER_BY(orderByString);
+		}
+		
 		String sql = SQL();
 		System.out.println(sql);
 		return sql;
