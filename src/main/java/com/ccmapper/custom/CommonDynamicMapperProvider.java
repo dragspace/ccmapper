@@ -27,7 +27,12 @@ public abstract class CommonDynamicMapperProvider extends CustomCommonSqlProvide
 
 	public String getListByExample(Example example){
 		BEGIN();
-		SELECT(allSelect(beanClazz));
+		String selectSql = example.generateSelectPropertiesSql(propertyAndColumnMap);
+		if(selectSql == null){
+			SELECT(allSelect(beanClazz));
+		}else{
+			SELECT(selectSql);
+		}
 		FROM(tableName);
 		
 		String whereSql = example.generateWhereSql(propertyAndColumnMap);

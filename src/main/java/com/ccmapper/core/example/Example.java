@@ -38,8 +38,8 @@ import com.ccmapper.core.utils.CCStringUtils;
  *
  * @author liuzh
  */
-public class Example extends HashMap<String, Object>{
-	//private boolean distinct;
+public class Example extends HashMap<String, Object> {
+	// private boolean distinct;
 
 	/**
 	 * @Fields serialVersionUID : serialVersionUID
@@ -55,8 +55,8 @@ public class Example extends HashMap<String, Object>{
 	private Criteria andCriteria;
 
 	private List<OrderBy> orderByList;
-	
-	private  List<Object> params = new ArrayList<Object>();
+
+	private List<Object> params = new ArrayList<Object>();
 
 	/**
 	 * 带exists参数的构造方法
@@ -111,9 +111,6 @@ public class Example extends HashMap<String, Object>{
 		}
 	}
 
-	public List<String> getselectProperties(){
-		return this.selectPropertyList;
-	}
 	/**
 	 * @Title: selectProperties
 	 * @Description: 指定要查询的属性列 - 这一这里不要指定重复的属性 你懂得。。。不想用set
@@ -122,14 +119,14 @@ public class Example extends HashMap<String, Object>{
 	 * @return
 	 */
 	public Example selectProperties(String... properties) {
-		if (properties != null && properties.length > 0) {
-			selectPropertyList = Arrays.asList(properties);
+		if(properties != null && properties.length > 0){
+			this.selectPropertyList = Arrays.asList(properties);
 		}
 		return this;
 	}
 
 	/**
-	 * @Title: orCriteria 
+	 * @Title: orCriteria
 	 * @Description: 注意这个每次调用都会返回一个新的实例
 	 * @author xiaoruihu
 	 * @return
@@ -141,8 +138,8 @@ public class Example extends HashMap<String, Object>{
 	}
 
 	/**
-	 * @Title: andCriteria 
-	 * @Description: 这个只会返回   唯一一个实例
+	 * @Title: andCriteria
+	 * @Description: 这个只会返回 唯一一个实例
 	 * @author xiaoruihu
 	 * @return
 	 */
@@ -152,41 +149,45 @@ public class Example extends HashMap<String, Object>{
 		}
 		return this.andCriteria;
 	}
-	
+
 	protected Criteria createCriteriaInternal() {
 		return new Criteria(notNull);
 	}
-	              	
-	public String generateWhereSql(Map<String, String> propertyAndColumnMap){
-		
+
+	public String generateWhereSql(Map<String, String> propertyAndColumnMap) {
+
 		StringBuilder whereSqlSB = new StringBuilder();
-		
-		if(this.andCriteria != null){
+
+		if (this.andCriteria != null) {
 			whereSqlSB.append(this.andCriteria.generateSql(propertyAndColumnMap, params));
 		}
-		
-		for(Criteria c : this.orCriteriaList){
+
+		for (Criteria c : this.orCriteriaList) {
 			whereSqlSB.append(ExampleConstant.OR);
-			if(c.isMany()){
-				whereSqlSB.append("(" + c.generateSql(propertyAndColumnMap, params) +")");
-			}else{
+			if (c.isMany()) {
+				whereSqlSB.append("(" + c.generateSql(propertyAndColumnMap, params) + ")");
+			} else {
 				whereSqlSB.append(c.generateSql(propertyAndColumnMap, params));
 			}
 		}
-		if(this.andCriteria == null && !this.orCriteriaList.isEmpty()){
+		if (this.andCriteria == null && !this.orCriteriaList.isEmpty()) {
 			CCStringUtils.deleteEnd(whereSqlSB, ExampleConstant.OR);
 		}
+
+		String whereSql = whereSqlSB.toString();
+		if("".equals(whereSql)){
+			whereSql = null;
+		}
 		
-		
-		return whereSqlSB.toString();
+		return whereSql;
 	}
-	
-	public String generateOrderBysql(Map<String, String> propertyAndColumnMap){
-		
-		if(!this.orderByList.isEmpty()){
+
+	public String generateOrderBysql(Map<String, String> propertyAndColumnMap) {
+
+		if (!this.orderByList.isEmpty()) {
 			StringBuilder orderBySqlSB = new StringBuilder();
-			
-			for(OrderBy orderBy : this.orderByList){
+
+			for (OrderBy orderBy : this.orderByList) {
 				orderBySqlSB.append(orderBy.generateOrderSql(propertyAndColumnMap));
 				orderBySqlSB.append(",");
 			}
@@ -196,13 +197,17 @@ public class Example extends HashMap<String, Object>{
 		return null;
 	}
 	
-	public String generateOrderSql(Map<String, String> propertyAndColumnMap){
-		if(this.orderByList != null){
-			
-			
-			
+	public String generateSelectPropertiesSql(Map<String, String> propertyAndColumnMap) {
+		if (this.selectPropertyList == null) {
+			return null;
+		}else{
+			StringBuilder sb = new StringBuilder();
+			for(String propertyName : this.selectPropertyList){
+				sb.append(propertyAndColumnMap.get(propertyName));
+				sb.append(", ");
+			}
+			return CCStringUtils.deleteEnd(sb, ", ").toString();
 		}
-		return null;
 	}
 
 	@Override
@@ -224,17 +229,16 @@ public class Example extends HashMap<String, Object>{
 			return criterionList.size() > 1;
 		}
 
-		protected String generateSql(Map<String, String> propertyAndColumnMap, List<Object> params){
+		protected String generateSql(Map<String, String> propertyAndColumnMap, List<Object> params) {
 			StringBuilder sb = new StringBuilder();
-			for(Criterion c : this.criterionList){
+			for (Criterion c : this.criterionList) {
 				sb.append(c.generateSql(propertyAndColumnMap, params));
 				sb.append(ExampleConstant.AND);
 			}
-			
+
 			return CCStringUtils.deleteEnd(sb, ExampleConstant.AND).toString();
 		}
-		
-		
+
 		protected void addCriterion(SqlSign sqlSign, String propertyName) {
 			if (propertyName == null) {
 				return;
@@ -356,8 +360,8 @@ public class Example extends HashMap<String, Object>{
 		protected Criterion(SqlSign sqlSign, String propertyName, Object value) {
 			this(sqlSign, propertyName);
 			this.value = value;
-			
-			if(value instanceof Collection){
+
+			if (value instanceof Collection) {
 				isCollection = true;
 			}
 		}
@@ -368,20 +372,20 @@ public class Example extends HashMap<String, Object>{
 			this.secondValue = secondValue;
 		}
 
-		String generateSql(Map<String, String> propertyAndColumnMap, List<Object> params) {
-			
+		protected String generateSql(Map<String, String> propertyAndColumnMap, List<Object> params) {
+
 			int index = params.size();
-			if(isCollection){
-				params.addAll((Collection<?>)this.value);
-			}else{
-				if(this.value != null){
+			if (isCollection) {
+				params.addAll((Collection<?>) this.value);
+			} else {
+				if (this.value != null) {
 					params.add(this.value);
-					if(this.secondValue != null){
+					if (this.secondValue != null) {
 						params.add(this.secondValue);
 					}
 				}
 			}
-			
+
 			return this.sqlSign.getCondition(propertyAndColumnMap.get(this.propertyName), index, params.size() - index);
 		}
 	}

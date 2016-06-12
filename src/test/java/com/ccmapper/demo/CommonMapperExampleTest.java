@@ -29,8 +29,8 @@ public class CommonMapperExampleTest {
 	@Test
 	public void testCommonMapper() {
 		try {
-			//这个还处于试验阶段不可靠
 			Example e = new Example(false);
+			e.selectProperties("id", "name");
 			Criteria and = e.andCriteria();
 			and.equalTo("name", "我是谁");
 //			//c.notIn("age", Arrays.asList(20, 30));
