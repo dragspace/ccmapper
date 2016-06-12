@@ -17,9 +17,9 @@ import com.ccmapper.core.utils.BeanAndTableUtils;
  * @Description: CommonDynamicMapper 可以自己缓存sql 提升性能
  * @author xiaoruihu 2016年5月20日 下午3:14:40
  */
-public abstract class CommonDynamicMapperProvider extends CustomCommonSqlProvider {
+public abstract class CustomDynamicMapperProvider extends CustomCommonSqlProvider {
 
-	public CommonDynamicMapperProvider(String className) {
+	public CustomDynamicMapperProvider(String className) {
 		super(className);
 		this.tableName = this.beanClazz.getSimpleName();
 		propertyAndColumnMap = BeanAndTableUtils.getAllPropertyAndColumnMap(beanClazz);

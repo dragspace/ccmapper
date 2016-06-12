@@ -40,8 +40,8 @@
             </list>
         </property>
         
-        <property name="commonMapper" value="com.ccmapper.custom.CommonMapper"></property>
-        <property name="sqlProvider" value="com.ccmapper.custom.CommonDynamicMapperProvider"></property>
+        <property name="commonMapper" value="com.ccmapper.custom.CustomMapper"></property>
+        <property name="sqlProvider" value="com.ccmapper.custom.CustomDynamicMapperProvider"></property>
     </bean>
    
     
@@ -49,8 +49,8 @@
     <bean class="com.ccmapper.core.CommonBeanDefinitionRegistry">
         <property name="baseBeanPackage" value="com.demo.annobean"></property>
         <!-- commonMapper和sqlProvider必填 -->
-        <property name="commonMapper" value="com.ccmapper.customanno.CustomerAnnoMapper"></property>
-        <property name="sqlProvider" value="com.ccmapper.customanno.CustomannoDynamicMapperSqlProvider"></property>
+        <property name="commonMapper" value="com.ccmapper.customanno.CustomAnnoMapper"></property>
+        <property name="sqlProvider" value="com.ccmapper.customanno.CustomAnnoDynamicMapperSqlProvider"></property>
     </bean>
     
     

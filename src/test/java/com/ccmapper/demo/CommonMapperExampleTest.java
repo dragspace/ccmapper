@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ccmapper.core.example.Example;
 import com.ccmapper.core.example.Example.Criteria;
-import com.ccmapper.custom.CommonMapper;
+import com.ccmapper.custom.CustomMapper;
 import com.demo.bean.Demo4;
 
 /**
@@ -23,7 +23,7 @@ import com.demo.bean.Demo4;
 public class CommonMapperExampleTest {
 
 	@Autowired
-	private CommonMapper<Demo4> demo4CommonMapper;
+	private CustomMapper<Demo4> demo4CommonMapper;
 	
 
 	@Test

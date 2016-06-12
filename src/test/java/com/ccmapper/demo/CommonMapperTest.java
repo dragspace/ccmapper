@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.ccmapper.custom.CommonMapper;
-import com.ccmapper.customanno.CustomerAnnoMapper;
+import com.ccmapper.custom.CustomMapper;
+import com.ccmapper.customanno.CustomAnnoMapper;
 import com.demo.annobean.Demo4Entity;
 import com.demo.bean.Demo;
 import com.demo.bean.Demo4;
@@ -18,13 +18,13 @@ import com.demo.bean.Demo4;
 public class CommonMapperTest {
 
 	@Autowired
-	private CommonMapper<Demo4> demo4CommonMapper;
+	private CustomMapper<Demo4> demo4CommonMapper;
 	
 	@Autowired
-	private CommonMapper<Demo> demoCommonMapper;
+	private CustomMapper<Demo> demoCommonMapper;
 	
 	@Autowired
-	private CustomerAnnoMapper<Demo4Entity> annoCommonMapper;
+	private CustomAnnoMapper<Demo4Entity> annoCommonMapper;
 
 	@Test
 	public void testCommonMapper() {

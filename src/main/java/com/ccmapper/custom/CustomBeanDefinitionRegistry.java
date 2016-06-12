@@ -10,8 +10,8 @@ import com.demo.bean.Demo4;
 
 public class CustomBeanDefinitionRegistry extends AbstractCCMapperBeanDefinitionRegistry {
 
-	private Class<?> defaultSqlProvider = CommonDynamicMapperProvider.class;
-	private Class<?> defaultCommonMapper = CommonMapper.class;
+	private Class<?> defaultSqlProvider = CustomDynamicMapperProvider.class;
+	private Class<?> defaultCommonMapper = CustomMapper.class;
 
 	@SuppressWarnings("unchecked")
 	@Override

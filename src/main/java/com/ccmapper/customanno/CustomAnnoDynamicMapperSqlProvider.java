@@ -14,12 +14,12 @@ import javax.persistence.Table;
 
 import com.ccmapper.core.CustomCommonSqlProvider;
 
-public class CustomannoDynamicMapperSqlProvider extends CustomCommonSqlProvider {
+public class CustomAnnoDynamicMapperSqlProvider extends CustomCommonSqlProvider {
 
 	private List<Method> readMethodList = new ArrayList<Method>();
 
 
-	public CustomannoDynamicMapperSqlProvider(String className) {
+	public CustomAnnoDynamicMapperSqlProvider(String className) {
 		super(className);
 
 		try {
