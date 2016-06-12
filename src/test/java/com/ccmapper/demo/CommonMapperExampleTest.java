@@ -25,7 +25,6 @@ public class CommonMapperExampleTest {
 	@Autowired
 	private CustomMapper<Demo4> demo4CommonMapper;
 	
-
 	@Test
 	public void testCommonMapper() {
 		try {

@@ -1,5 +1,5 @@
-﻿# Host: 127.0.0.1  (Version: 5.6.21-log)
-# Date: 2016-05-31 14:42:41
+# Host: 127.0.0.1  (Version: 5.6.21-log)
+# Date: 2016-06-12 18:48:48
 # Generator: MySQL-Front 5.3  (Build 4.13)
 
 /*!40101 SET NAMES utf8 */;
@@ -18,12 +18,6 @@ CREATE TABLE `demo` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 #
-# Data for table "demo"
-#
-
-INSERT INTO `demo` VALUES (1,'demo',0,67);
-
-#
 # Source for table "demo2"
 #
 
@@ -35,12 +29,6 @@ CREATE TABLE `demo2` (
   `age` int(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-#
-# Data for table "demo2"
-#
-
-INSERT INTO `demo2` VALUES (1,'demo2',0,67);
 
 #
 # Source for table "demo3"
@@ -56,12 +44,6 @@ CREATE TABLE `demo3` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 #
-# Data for table "demo3"
-#
-
-INSERT INTO `demo3` VALUES (1,'demo3',0,67);
-
-#
 # Source for table "demo4"
 #
 
@@ -73,12 +55,6 @@ CREATE TABLE `demo4` (
   `age` int(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
-
-#
-# Data for table "demo4"
-#
-
-INSERT INTO `demo4` VALUES (2,'呵呵',NULL,99),(3,'fasd',3,343),(4,'abc',1,120),(5,'abc',1,120),(6,'我是谁',NULL,NULL),(7,'我是谁',NULL,NULL),(8,'我是谁',NULL,NULL),(9,'我是谁',NULL,NULL),(10,'我是谁',NULL,NULL),(11,'我是谁',NULL,NULL),(12,'我是谁',NULL,NULL),(13,'我是谁',NULL,NULL),(14,'我是谁',NULL,NULL),(15,'我是谁',NULL,NULL),(16,'我是谁',NULL,NULL);
 
 #
 # Source for table "demo5"
@@ -94,7 +70,26 @@ CREATE TABLE `demo5` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 #
-# Data for table "demo5"
+# Source for table "org"
 #
 
-INSERT INTO `demo5` VALUES (6,'fads',NULL,123),(7,'fs',1,33);
+DROP TABLE IF EXISTS `org`;
+CREATE TABLE `org` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+#
+# Source for table "user"
+#
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `sex` tinyint(2) DEFAULT NULL,
+  `age` int(5) DEFAULT NULL,
+  `orgId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
