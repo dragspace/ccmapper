@@ -38,7 +38,7 @@ public interface CustomMapper<T> {
 	@SelectProvider(type = CustomDynamicMapperProvider.class, method = "selectAll")
 	public List<Map<String, Object>> getMapListAll();
 	
-	@SelectProvider(type = CustomDynamicMapperProvider.class, method = "getListByExample")
+	@SelectProvider(type = CustomDynamicMapperProvider.class, method = "selectListByExample")
 	public List<T> getListByExample(Example example);
 	
 	

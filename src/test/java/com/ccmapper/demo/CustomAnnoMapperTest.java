@@ -66,7 +66,7 @@ public class CustomAnnoMapperTest  extends AbstractTransactionalJUnit4SpringCont
 		
 		Long primaryKey = beforeUser.getId();
 		beforeUser.setName("xxxxA");
-		beforeUser.setOrgId(10000);
+		beforeUser.setOrgId(10000l);
 		userAnnoCustomAnnoMapper.update(beforeUser);
 		
 		UserAnno afterUser = userAnnoCustomAnnoMapper.getByPrimaryKey(primaryKey);
@@ -84,7 +84,7 @@ public class CustomAnnoMapperTest  extends AbstractTransactionalJUnit4SpringCont
 		
 		List<UserAnno> afterUserList = userAnnoCustomAnnoMapper.getAll();
 		Assert.assertTrue(CompareUtils.isListEqual(beforeUserList, afterUserList));
-		logger.info("select return list is cuccess");
+		logger.info("select return list is success");
 	}
 	
 	

@@ -66,7 +66,7 @@ public class CustomMapperTest  extends AbstractTransactionalJUnit4SpringContextT
 		
 		Long primaryKey = beforeUser.getId();
 		beforeUser.setName("xxxxA");
-		beforeUser.setOrgId(10000);
+		beforeUser.setOrgId(10000l);
 		userCustomMapper.update(beforeUser);
 		
 		User afterUser = userCustomMapper.getByPrimaryKey(primaryKey);

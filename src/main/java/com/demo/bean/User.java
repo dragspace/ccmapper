@@ -21,7 +21,7 @@ public class User {
 
 	private Integer age;
 
-	private Integer orgId;
+	private Long orgId;
 
 	public Long getId() {
 		return id;
@@ -55,11 +55,11 @@ public class User {
 		this.age = age;
 	}
 
-	public Integer getOrgId() {
+	public Long getOrgId() {
 		return orgId;
 	}
 
-	public void setOrgId(Integer orgId) {
+	public void setOrgId(Long orgId) {
 		this.orgId = orgId;
 	}
 

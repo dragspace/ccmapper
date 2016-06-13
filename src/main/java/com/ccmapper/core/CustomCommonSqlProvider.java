@@ -3,6 +3,7 @@ package com.ccmapper.core;
 import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
 import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
 import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
+import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
 import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
 import static org.apache.ibatis.jdbc.SqlBuilder.SET;
 import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
@@ -17,6 +18,8 @@ import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
+
+import com.ccmapper.core.example.Example;
 
 public class CustomCommonSqlProvider extends AbstractSqlProvider {
 
@@ -101,6 +104,29 @@ public class CustomCommonSqlProvider extends AbstractSqlProvider {
 		return SQL();
 	}
 
+	public String selectListByExample(Example example){
+		BEGIN();
+		String selectSql = example.generateSelectPropertiesSql(propertyAndColumnMap);
+		if(selectSql == null){
+			SELECT(allSelect(beanClazz));
+		}else{
+			SELECT(selectSql);
+		}
+		FROM(tableName);
+		
+		String whereSql = example.generateWhereSql(propertyAndColumnMap);
+		if(whereSql != null){
+			WHERE(whereSql);
+		}
+		
+		String orderByString = example.generateOrderBysql(propertyAndColumnMap);
+		if(orderByString != null){
+			ORDER_BY(orderByString);
+		}
+		
+		return SQL();
+	}
+	
 	public String allSelect(Class<?> clazz) {
 		StringBuilder selectSB = new StringBuilder();
 		for (String property : propertyAndColumnMap.keySet()) {

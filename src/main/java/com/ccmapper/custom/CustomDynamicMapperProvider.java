@@ -1,14 +1,6 @@
 package com.ccmapper.custom;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-
 import com.ccmapper.core.CustomCommonSqlProvider;
-import com.ccmapper.core.example.Example;
 import com.ccmapper.core.utils.BeanAndTableUtils;
 
 /**
@@ -23,32 +15,7 @@ public abstract class CustomDynamicMapperProvider extends CustomCommonSqlProvide
 		super(className);
 		this.tableName = this.beanClazz.getSimpleName();
 		propertyAndColumnMap = BeanAndTableUtils.getAllPropertyAndColumnMap(beanClazz);
+		this.primaryKey = "id";
 	}
 
-	public String getListByExample(Example example){
-		BEGIN();
-		String selectSql = example.generateSelectPropertiesSql(propertyAndColumnMap);
-		if(selectSql == null){
-			SELECT(allSelect(beanClazz));
-		}else{
-			SELECT(selectSql);
-		}
-		FROM(tableName);
-		
-		String whereSql = example.generateWhereSql(propertyAndColumnMap);
-		if(whereSql != null){
-			WHERE(whereSql);
-		}
-		
-		String orderByString = example.generateOrderBysql(propertyAndColumnMap);
-		if(orderByString != null){
-			ORDER_BY(orderByString);
-		}
-		
-		String sql = SQL();
-		System.out.println(sql);
-		return sql;
-		
-	}
-	
 }

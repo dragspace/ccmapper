@@ -33,7 +33,6 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
      -->
-    <!-- <bean class="com.ccmapper.custom.CustomBeanDefinitionRegistry"></bean> -->
     
     <!-- commonMapper和sqlProvider必填 -->
     <!-- baseBeanPackage和beanClasssList可以配合使用也可以单独使用 2项必填一项  -->
@@ -41,8 +40,8 @@
         <property name="baseBeanPackage" value="com.demo.bean"></property>
         <property name="beanClasssList">
             <list>
-                <value>com.demo.bean.Demo4</value>
-                <value>com.demo.bean.Demo</value>
+                <value>com.demo.bean.User</value>
+                <value>com.demo.bean.Org</value>
             </list>
         </property>
         

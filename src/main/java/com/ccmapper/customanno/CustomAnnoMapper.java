@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
+import com.ccmapper.core.example.Example;
+
 public interface CustomAnnoMapper<T> {
 
 	@InsertProvider(type = CustomAnnoDynamicMapperSqlProvider.class, method = "insert")
@@ -36,4 +38,7 @@ public interface CustomAnnoMapper<T> {
 	@SelectProvider(type = CustomAnnoDynamicMapperSqlProvider.class, method = "selectAll")
 	public List<Map<String, Object>> getMapListAll();
 
+	@SelectProvider(type = CustomAnnoDynamicMapperSqlProvider.class, method = "selectListByExample")
+	public List<T> getListByExample(Example example);
+	
 }

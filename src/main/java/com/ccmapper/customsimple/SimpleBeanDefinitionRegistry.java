@@ -5,14 +5,14 @@ import java.util.Collection;
 import java.util.List;
 
 import com.ccmapper.core.AbstractCCMapperBeanDefinitionRegistry;
-import com.demo.bean.Demo;
+import com.demo.simple.SimpleBean;
 
 public class SimpleBeanDefinitionRegistry extends AbstractCCMapperBeanDefinitionRegistry{
 
 	@Override
 	public Collection<Class<?>> getBeanList() {
 		List<Class<?>> list = new ArrayList<Class<?>>();
-		list.add(Demo.class);
+		list.add(SimpleBean.class);
 		return list;
 	}
 

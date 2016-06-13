@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * @Description: OrgAnno
  * @author xiaoruihu 2016年6月12日 下午3:00:25
  */
-@Table(name = "USER")
+@Table(name = "ORG")
 public class OrgAnno {
 
 	@Id
@@ -42,7 +42,7 @@ public class OrgAnno {
 
 	@Override
 	public String toString() {
-		return "GroupEntity [id=" + id + ", name=" + name + "]";
+		return "OrgAnno [id=" + id + ", name=" + name + "]";
 	}
 
 	@Override

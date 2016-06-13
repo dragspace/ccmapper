@@ -26,6 +26,9 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 
 
 public class MapperDynamicUtils {
+	
+	private static final String PRE_MAPPER_PACKAGE_NAME = "com.ccmapper.mapper.dynamic.";
+	private static final String PRE_SQLPROVIDER_PACKAGE_NAME = "com.ccmapper.sqlprovider.dynamic.";
 
 	/**
 	 * 需要修改的mybatis注解
@@ -55,7 +58,7 @@ public class MapperDynamicUtils {
 			ClassPool pool = ClassPool.getDefault();
 			pool.insertClassPath(new ClassClassPath(MapperDynamicUtils.class));
 			CtClass superIn = pool.get(commonMapperClass.getName());
-			CtClass ct = pool.makeInterface(generateClassName("Proxy" + commonMapperClass.getSimpleName() + beanClazz.getSimpleName()));
+			CtClass ct = pool.makeInterface(PRE_MAPPER_PACKAGE_NAME + "Proxy" + commonMapperClass.getSimpleName() + beanClazz.getSimpleName());
 			GenericUtils.setTCommonMapperGeneric(beanClazz, ct, commonMapperClass);
 			modifyAnnotation(ct, beanClazz,commonMapperClass, commonSqlProviderClass, superIn);
 			ct.setSuperclass(superIn);
@@ -159,7 +162,7 @@ public class MapperDynamicUtils {
 			ClassPool pool = ClassPool.getDefault();
 			pool.insertClassPath(new ClassClassPath(MapperDynamicUtils.class));
 			CtClass superIn = pool.get(superClass.getName());
-			CtClass ct = pool.makeClass(generateClassName("Proxy" + superSqlProviderClass.getSimpleName() + beanClass.getSimpleName()));
+			CtClass ct = pool.makeClass(PRE_SQLPROVIDER_PACKAGE_NAME + "Proxy" + superSqlProviderClass.getSimpleName() + beanClass.getSimpleName());
 			ct.setGenericSignature(beseString + genString + ";");
 			ct.setSuperclass(superIn);
 			CtConstructor cons = new CtConstructor(new CtClass[] {}, ct);
@@ -173,9 +176,9 @@ public class MapperDynamicUtils {
 		}
 	}
 
-	private static String generateClassName(String pre) {
-		return "com.dynamic." + pre;
-	}
+//	private static String generateClassName(String pre) {
+//		return "com.dynamic." + pre;
+//	}
 
 	public static void registerCommonMapper(Class<?> beanClazz, BeanDefinitionRegistry registry, Class<?> commonMapperClass, Class<?> commonSqlProviderClass) {
 

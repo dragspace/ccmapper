@@ -32,7 +32,7 @@ public class UserAnno {
     private Integer age;
     
     @Column(name = "ORGID")
-    private Integer orgId;
+    private Long orgId;
     
 
     public Long getId() {
@@ -61,10 +61,10 @@ public class UserAnno {
     }
     
     
-	public Integer getOrgId() {
+	public Long getOrgId() {
 		return orgId;
 	}
-	public void setOrgId(Integer orgId) {
+	public void setOrgId(Long orgId) {
 		this.orgId = orgId;
 	}
 	

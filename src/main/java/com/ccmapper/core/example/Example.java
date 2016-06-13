@@ -69,6 +69,10 @@ public class Example extends HashMap<String, Object> {
 		this.orCriteriaList = new ArrayList<Criteria>();
 		this.orderByList = new ArrayList<OrderBy>();
 	}
+	
+	public Example() {
+		this(false);
+	}
 
 	public OrderBy orderBy(String propertyName) {
 		OrderBy ob = new OrderBy(propertyName);
@@ -163,11 +167,16 @@ public class Example extends HashMap<String, Object> {
 		}
 
 		for (Criteria c : this.orCriteriaList) {
+			
+			String criteriaSql = c.generateSql(propertyAndColumnMap, params);
+			if(criteriaSql == null){
+				continue;
+			}
 			whereSqlSB.append(ExampleConstant.OR);
 			if (c.isMany()) {
-				whereSqlSB.append("(" + c.generateSql(propertyAndColumnMap, params) + ")");
+				whereSqlSB.append("(" + criteriaSql + ")");
 			} else {
-				whereSqlSB.append(c.generateSql(propertyAndColumnMap, params));
+				whereSqlSB.append(criteriaSql);
 			}
 		}
 		if (this.andCriteria == null && !this.orCriteriaList.isEmpty()) {
@@ -231,6 +240,9 @@ public class Example extends HashMap<String, Object> {
 
 		protected String generateSql(Map<String, String> propertyAndColumnMap, List<Object> params) {
 			StringBuilder sb = new StringBuilder();
+			if(this.criterionList.isEmpty()){
+				return null;
+			}
 			for (Criterion c : this.criterionList) {
 				sb.append(c.generateSql(propertyAndColumnMap, params));
 				sb.append(ExampleConstant.AND);
