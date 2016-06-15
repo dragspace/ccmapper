@@ -28,8 +28,8 @@ public abstract class AbstractCCMapperBeanDefinitionRegistry implements BeanDefi
 		if (CollectionUtils.isEmpty(beanClassCollection)) {
 			return;
 		}
-		
-		if(getCommonMapper() == null || getSqlProvider() == null){
+
+		if (getCommonMapper() == null || getSqlProvider() == null) {
 			throw new NullPointerException(this.getClass().getName() + "的beanClasssName和sqlProvider 不能为空");
 		}
 		for (Class<?> clazz : beanClassCollection) {
@@ -57,7 +57,8 @@ public abstract class AbstractCCMapperBeanDefinitionRegistry implements BeanDefi
 	 * @Title: getSqlProvider
 	 * @Description: 获取sql提供者
 	 * @author xiaoruihu
-	 * @param <?> T extends AbstractSqlProvider
+	 * @param <?>
+	 *            T extends AbstractSqlProvider
 	 * @return
 	 */
 	public abstract Class<?> getSqlProvider();

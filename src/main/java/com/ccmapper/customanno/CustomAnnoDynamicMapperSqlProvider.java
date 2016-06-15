@@ -18,15 +18,13 @@ public class CustomAnnoDynamicMapperSqlProvider extends CustomCommonSqlProvider 
 
 	private List<Method> readMethodList = new ArrayList<Method>();
 
-
 	public CustomAnnoDynamicMapperSqlProvider(String className) {
 		super(className);
 
 		try {
-
 			Table table = this.beanClazz.getAnnotation(Table.class);
 			if (table == null) {
-				throw new RuntimeException("改bean不存在Table注解  bean " + className);
+				throw new RuntimeException("该bean不存在Table注解  bean " + className);
 			}
 
 			this.tableName = table.name();
@@ -68,7 +66,5 @@ public class CustomAnnoDynamicMapperSqlProvider extends CustomCommonSqlProvider 
 		} catch (Exception e) {
 			throw new RuntimeException("初始化bean属性失败 bean " + className, e);
 		}
-
 	}
-	
 }

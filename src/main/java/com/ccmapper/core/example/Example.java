@@ -69,7 +69,7 @@ public class Example extends HashMap<String, Object> {
 		this.orCriteriaList = new ArrayList<Criteria>();
 		this.orderByList = new ArrayList<OrderBy>();
 	}
-	
+
 	public Example() {
 		this(false);
 	}
@@ -123,7 +123,7 @@ public class Example extends HashMap<String, Object> {
 	 * @return
 	 */
 	public Example selectProperties(String... properties) {
-		if(properties != null && properties.length > 0){
+		if (properties != null && properties.length > 0) {
 			this.selectPropertyList = Arrays.asList(properties);
 		}
 		return this;
@@ -167,9 +167,9 @@ public class Example extends HashMap<String, Object> {
 		}
 
 		for (Criteria c : this.orCriteriaList) {
-			
+
 			String criteriaSql = c.generateSql(propertyAndColumnMap, params);
-			if(criteriaSql == null){
+			if (criteriaSql == null) {
 				continue;
 			}
 			whereSqlSB.append(ExampleConstant.OR);
@@ -184,10 +184,10 @@ public class Example extends HashMap<String, Object> {
 		}
 
 		String whereSql = whereSqlSB.toString();
-		if("".equals(whereSql)){
+		if ("".equals(whereSql)) {
 			whereSql = null;
 		}
-		
+
 		return whereSql;
 	}
 
@@ -205,13 +205,13 @@ public class Example extends HashMap<String, Object> {
 		}
 		return null;
 	}
-	
+
 	public String generateSelectPropertiesSql(Map<String, String> propertyAndColumnMap) {
 		if (this.selectPropertyList == null) {
 			return null;
-		}else{
+		} else {
 			StringBuilder sb = new StringBuilder();
-			for(String propertyName : this.selectPropertyList){
+			for (String propertyName : this.selectPropertyList) {
 				sb.append(propertyAndColumnMap.get(propertyName));
 				sb.append(", ");
 			}
@@ -240,7 +240,7 @@ public class Example extends HashMap<String, Object> {
 
 		protected String generateSql(Map<String, String> propertyAndColumnMap, List<Object> params) {
 			StringBuilder sb = new StringBuilder();
-			if(this.criterionList.isEmpty()){
+			if (this.criterionList.isEmpty()) {
 				return null;
 			}
 			for (Criterion c : this.criterionList) {

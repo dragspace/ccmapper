@@ -13,7 +13,7 @@ public class CommonBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 	 * 基础bean的路径
 	 */
 	private String baseBeanPackage;
-	
+
 	/**
 	 * 自定义bean路径
 	 */
@@ -31,13 +31,6 @@ public class CommonBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 
 		if (beanClasssList != null) {
 			beanSet.addAll(beanClasssList);
-//			try {
-//				for (String className : beanClasssNameList) {
-//					beanSet.add(Class.forName(className));
-//				}
-//			} catch (ClassNotFoundException e) {
-//				throw new IllegalArgumentException("beanClasssNameList注入失败", e);
-//			}
 		}
 
 		return beanSet;

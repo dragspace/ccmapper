@@ -27,10 +27,10 @@ public class CustomCommonSqlProvider extends AbstractSqlProvider {
 	protected String tableName;
 	protected String primaryKey;
 
-	
 	public CustomCommonSqlProvider(String className) {
 		super(className);
 	}
+
 	public String insert(Object o) {
 		BEGIN();
 		INSERT_INTO(tableName);
@@ -104,29 +104,29 @@ public class CustomCommonSqlProvider extends AbstractSqlProvider {
 		return SQL();
 	}
 
-	public String selectListByExample(Example example){
+	public String selectListByExample(Example example) {
 		BEGIN();
 		String selectSql = example.generateSelectPropertiesSql(propertyAndColumnMap);
-		if(selectSql == null){
+		if (selectSql == null) {
 			SELECT(allSelect(beanClazz));
-		}else{
+		} else {
 			SELECT(selectSql);
 		}
 		FROM(tableName);
-		
+
 		String whereSql = example.generateWhereSql(propertyAndColumnMap);
-		if(whereSql != null){
+		if (whereSql != null) {
 			WHERE(whereSql);
 		}
-		
+
 		String orderByString = example.generateOrderBysql(propertyAndColumnMap);
-		if(orderByString != null){
+		if (orderByString != null) {
 			ORDER_BY(orderByString);
 		}
-		
+
 		return SQL();
 	}
-	
+
 	public String allSelect(Class<?> clazz) {
 		StringBuilder selectSB = new StringBuilder();
 		for (String property : propertyAndColumnMap.keySet()) {

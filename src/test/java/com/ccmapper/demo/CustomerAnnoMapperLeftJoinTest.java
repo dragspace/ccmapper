@@ -29,11 +29,11 @@ public class CustomerAnnoMapperLeftJoinTest extends AbstractTransactionalJUnit4S
 	@Autowired
 	private CustomAnnoMapper<UserAndOrg> userAndOrgCustomAnnoMapper;
 
-	 @Autowired
-	 private CustomAnnoMapper<OrgAnno> orgAnnoCustomAnnoMapper;
-	 
-	 @Autowired
-	 private CustomAnnoMapper<UserAnno> userAnnoCustomAnnoMapper;
+	@Autowired
+	private CustomAnnoMapper<OrgAnno> orgAnnoCustomAnnoMapper;
+
+	@Autowired
+	private CustomAnnoMapper<UserAnno> userAnnoCustomAnnoMapper;
 
 	@Before
 	public void setup() {
@@ -43,37 +43,37 @@ public class CustomerAnnoMapperLeftJoinTest extends AbstractTransactionalJUnit4S
 
 	@After
 	public void teardown() {
-		
+
 	}
-	
+
 	@Test
-	public void testLeftJoin(){
-		
+	public void testLeftJoin() {
+
 		logger.info(" start test left join ");
 		logger.info(" create test data start ");
 		int userSize = 10;
 		int orgSize = 5;
-		
+
 		List<UserAnno> listUser = GenerateUtils.generateUserAnnoList(userSize);
 		long id = 0;
-		for(UserAnno u: listUser){
+		for (UserAnno u : listUser) {
 			u.setId(id++);
 		}
-		
+
 		List<OrgAnno> listOrg = GenerateUtils.generateOrgAnnoList(orgSize);
-		for(OrgAnno o: listOrg){
+		for (OrgAnno o : listOrg) {
 			o.setId(id++);
 		}
-		
-		for(UserAnno u: listUser){
+
+		for (UserAnno u : listUser) {
 			u.setOrgId(listOrg.get(GenerateUtils.RANDOM.nextInt(listOrg.size())).getId());
 		}
-		
-		for(UserAnno u : listUser){
+
+		for (UserAnno u : listUser) {
 			this.userAnnoCustomAnnoMapper.insert(u);
 		}
-		
-		for(OrgAnno o : listOrg){
+
+		for (OrgAnno o : listOrg) {
 			this.orgAnnoCustomAnnoMapper.insert(o);
 		}
 		logger.info(" create test data end");
@@ -81,18 +81,17 @@ public class CustomerAnnoMapperLeftJoinTest extends AbstractTransactionalJUnit4S
 		List<UserAndOrg> all = this.userAndOrgCustomAnnoMapper.getAll();
 		Assert.assertTrue(all.size() == listUser.size());
 		logger.info(" test testLeftJoin is success ");
-		
+
 		logger.info("test data : ");
-		
+
 		printList(listUser);
 		printList(listOrg);
 		printList(all);
-		
+
 	}
 
-	
-	private void printList(List<?> list){
-		for(Object o : list){
+	private void printList(List<?> list) {
+		for (Object o : list) {
 			logger.info(o.toString());
 		}
 	}

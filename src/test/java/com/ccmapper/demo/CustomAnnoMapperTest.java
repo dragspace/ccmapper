@@ -19,23 +19,22 @@ import com.ccmapper.demo.utils.CompareUtils;
 import com.ccmapper.demo.utils.GenerateUtils;
 import com.demo.annobean.UserAnno;
 
-
 /**
  * @Description: CustomMapperTest
  * @author xiaoruihu 2016年6月12日 下午2:19:31
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath*:spring-jdbc.xml" })
-public class CustomAnnoMapperTest  extends AbstractTransactionalJUnit4SpringContextTests{
+public class CustomAnnoMapperTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	protected Logger logger = LoggerFactory.getLogger(CustomAnnoMapperTest.class);
-	
+
 	@Autowired
 	private CustomAnnoMapper<UserAnno> userAnnoCustomAnnoMapper;
-	
-//	@Autowired
-//	private CustomAnnoMapper<OrgAnno> orgAnnoCustomAnnoMapper;
-	
+
+	// @Autowired
+	// private CustomAnnoMapper<OrgAnno> orgAnnoCustomAnnoMapper;
+
 	@Before
 	public void setup() {
 		deleteFromTables("USER");
@@ -45,47 +44,45 @@ public class CustomAnnoMapperTest  extends AbstractTransactionalJUnit4SpringCont
 	@After
 	public void teardown() {
 	}
-	
-	
+
 	@Test
-	public void testInsert(){
+	public void testInsert() {
 		logger.info("insert and getByPrimaryKey test start");
 		UserAnno beforeUser = GenerateUtils.generateUserAnno();
 		userAnnoCustomAnnoMapper.insert(beforeUser);
-		
+
 		UserAnno afterUser = userAnnoCustomAnnoMapper.getByPrimaryKey(beforeUser.getId());
 		Assert.assertTrue(beforeUser.equals(afterUser));
 		logger.info("insert and getByPrimaryKey test is success");
 	}
 
 	@Test
-	public void testUpdate(){
+	public void testUpdate() {
 		logger.info("update test start");
 		UserAnno beforeUser = GenerateUtils.generateUserAnno();
 		userAnnoCustomAnnoMapper.insert(beforeUser);
-		
+
 		Long primaryKey = beforeUser.getId();
 		beforeUser.setName("xxxxA");
 		beforeUser.setOrgId(10000l);
 		userAnnoCustomAnnoMapper.update(beforeUser);
-		
+
 		UserAnno afterUser = userAnnoCustomAnnoMapper.getByPrimaryKey(primaryKey);
 		Assert.assertTrue(beforeUser.equals(afterUser));
 		logger.info("update test is success");
 	}
-	
+
 	@Test
-	public void testList(){
+	public void testList() {
 		logger.info("select return list start");
 		List<UserAnno> beforeUserList = GenerateUtils.generateUserAnnoList(10);
-		for(UserAnno user : beforeUserList){
+		for (UserAnno user : beforeUserList) {
 			userAnnoCustomAnnoMapper.insert(user);
 		}
-		
+
 		List<UserAnno> afterUserList = userAnnoCustomAnnoMapper.getAll();
 		Assert.assertTrue(CompareUtils.isListEqual(beforeUserList, afterUserList));
 		logger.info("select return list is success");
 	}
-	
-	
+
 }
