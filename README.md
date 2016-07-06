@@ -1,5 +1,5 @@
 # ccmapper
-> - 用来自定义通用mapper的工具集    参考了 mapper插件的API。。。 
+> - 用来自定义通用mapper的工具集    参考了 mapper插件的API。。。 。。
 > - 原理      动态生成泛型子接口，并注入到spring中
 > - 核心只有2个类。。。MapperDynamicUtils和泛型辅助类GenericUtils
 > - 核心方法   
