@@ -14,6 +14,10 @@ import javax.persistence.Table;
 
 import com.ccmapper.core.CustomCommonSqlProvider;
 
+/**
+ * @Description: CustomAnnoDynamicMapperSqlProvider  注解初始化sqlProvider
+ * @author xiaoruihu 2016年11月14日 下午4:25:14
+ */
 public class CustomAnnoDynamicMapperSqlProvider extends CustomCommonSqlProvider {
 
 	private List<Method> readMethodList = new ArrayList<Method>();

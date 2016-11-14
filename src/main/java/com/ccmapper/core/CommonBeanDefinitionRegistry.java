@@ -7,19 +7,24 @@ import java.util.Set;
 
 import com.ccmapper.core.utils.ScannerUtils;
 
+/**
+ * @Description: CommonBeanDefinitionRegistry 方便通用mapper注册
+ * @author xiaoruihu 2016年11月14日 下午4:08:46
+ */
 public class CommonBeanDefinitionRegistry extends AbstractCCMapperBeanDefinitionRegistry {
 
 	/**
-	 * 基础bean的路径
+	 * 基础bean的 **包**  路径
 	 */
 	private String baseBeanPackage;
 
 	/**
-	 * 自定义bean路径
+	 * 自定义单个bean的**class**路径
 	 */
 	private List<Class<?>> beanClasssList;
 
 	private Class<?> commonMapper;
+	
 	private Class<?> sqlProvider;
 
 	@Override

@@ -180,7 +180,17 @@ public class MapperDynamicUtils {
 //		return "com.dynamic." + pre;
 //	}
 
-	public static void registerCommonMapper(Class<?> beanClazz, BeanDefinitionRegistry registry, Class<?> commonMapperClass, Class<?> commonSqlProviderClass) {
+	/**
+	 * @Title: registerCommonMapper 
+	 * @Description: 注册一个bean的通用mapper
+	 * @author xiaoruihu
+	 * @param beanClazz
+	 * @param registry
+	 * @param commonMapperClass
+	 * @param commonSqlProviderClass
+	 * @return 这个专属beanClazz的Mapper的beanId
+	 */
+	public static String registerCommonMapper(Class<?> beanClazz, BeanDefinitionRegistry registry, Class<?> commonMapperClass, Class<?> commonSqlProviderClass) {
 
 		Class<?> clazz = generateMapperClass(beanClazz, commonMapperClass, commonSqlProviderClass);
 		// 通过BeanDefinitionBuilder创建bean定义
@@ -193,6 +203,8 @@ public class MapperDynamicUtils {
 		definition.getPropertyValues().add("mapperInterface", clazz);
 		definition.getPropertyValues().add("sqlSessionFactory", new RuntimeBeanReference("sqlSessionFactory"));
 		registry.registerBeanDefinition(beanname, definition);
+		
+		return beanname;
 	}
 
 }
