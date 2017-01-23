@@ -9,23 +9,23 @@ String MapperDynamicUtils.registerCommonMapper(beanClazz, registry, commonMapper
 
 
 ## 自定义commonMapper 
-> - core 核心包 
-> - 3个custom包   扩展查询包
-> > - custom bean属性和字段一致 bean名就是表明 
-> > - customanno javax.persistence  注解映射
-> > - customsimple  最简单的例子  
+> core 核心包 
+> 3个custom包   扩展查询包
+>> custom bean属性和字段一致 bean名就是表明 
+>> customanno javax.persistence  注解映射
+>> customsimple  最简单的例子  
 
-> - demo 样例bean包
+> demo 样例bean包
 
 ## 限制 
 > - 返回值类型目前只支持T 和Map， 注意泛型只能指定为T
 ## 测试看test包
 
 ##目前集成
-> - 扫描指定包bean 工具
-> - persistence注解工具类
-> - 增删改查样例
-> - 动态查询
+> 扫描指定包bean 工具
+> persistence注解工具类
+> 增删改查样例
+> 动态查询
 
 ## 后续持续改进
 > - 简单多表关联
@@ -39,12 +39,12 @@ private CustomAnnoMapper<UserAndOrg> userAndOrgCustomAnnoMapper;
 private CustomAnnoMapper<OrgAnno> orgAnnoCustomAnnoMapper;
 
 ```    
-##说明
-> - 内部会自动生成CustomAnnoMapper  2个接口，一个是UserAndOrg的泛型接口，一个是OrgAnno的泛型接口， 这样依赖spring的泛型注入就可以使用了**
-> - CustomAnnoMapper的方法可以任意定制
-> - 返回值只能是  
-> > 泛型 T, 
-> > - List<T>
-> > - void
-> > - Map<String, Object>
-> > - List<Map<String, Object>>
+## 说明
+> 内部会自动生成CustomAnnoMapper  2个接口，一个是UserAndOrg的泛型接口，一个是OrgAnno的泛型接口， 这样依赖spring的泛型注入就可以使用了
+> CustomAnnoMapper的方法可以任意定制
+> 返回值只能是  
+>> 泛型 T, 
+>> List<T>
+>> void
+>> Map<String, Object>
+>> List<Map<String, Object>>
