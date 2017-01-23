@@ -26,6 +26,11 @@ public class CommonBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 	private Class<?> commonMapper;
 	
 	private Class<?> sqlProvider;
+	
+	/**
+	 * sqlSessionFactory的ID
+	 */
+	private String sqlSessionFactoryBeanName;
 
 	@Override
 	public Collection<Class<?>> getBeanList() {
@@ -51,6 +56,11 @@ public class CommonBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 		return sqlProvider;
 	}
 
+	@Override
+	public String getSqlSessionFactoryBeanName() {
+		return this.sqlSessionFactoryBeanName;
+	}
+	
 	public void setBaseBeanPackage(String baseBeanPackage) {
 		this.baseBeanPackage = baseBeanPackage;
 	}
@@ -65,6 +75,10 @@ public class CommonBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 
 	public void setSqlProvider(Class<?> sqlProvider) {
 		this.sqlProvider = sqlProvider;
+	}
+
+	public void setSqlSessionFactoryBeanName(String sqlSessionFactoryBeanName) {
+		this.sqlSessionFactoryBeanName = sqlSessionFactoryBeanName;
 	}
 
 }

@@ -26,4 +26,9 @@ public class SimpleBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 		return SimpleMapperSqlProvider.class;
 	}
 
+	@Override
+	public String getSqlSessionFactoryBeanName() {
+		return "sqlSessionFactory";
+	}
+
 }

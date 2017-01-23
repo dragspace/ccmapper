@@ -16,7 +16,6 @@
         <property name="password" value="${jdbc.password}" />
     </bean>
     
-    <!-- 注意这个bean一定要叫这个名字 写死了。。。不想在传递多余的参数了 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="configLocation" value="classpath:mybatis-config.xml" />
@@ -32,11 +31,12 @@
         <property name="basePackage" value="com.demo.mapper" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
-     -->
+    -->
     
     <!-- commonMapper和sqlProvider必填 -->
     <!-- baseBeanPackage和beanClasssList可以配合使用也可以单独使用 2项必填一项  -->
     <bean class="com.ccmapper.core.CommonBeanDefinitionRegistry">
+    	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
         <property name="baseBeanPackage" value="com.demo.bean"></property>
         <property name="beanClasssList">
             <list>
@@ -44,7 +44,7 @@
                 <value>com.demo.bean.Org</value>
             </list>
         </property>
-        
+        <!-- commonMapper和sqlProvider必填 -->
         <property name="commonMapper" value="com.ccmapper.custom.CustomMapper"></property>
         <property name="sqlProvider" value="com.ccmapper.custom.CustomDynamicMapperProvider"></property>
     </bean>
@@ -52,6 +52,7 @@
     
     <!-- baseBeanPackage和beanClasssList可以配合使用也可以单独使用 2项必填一项 -->
     <bean class="com.ccmapper.core.CommonBeanDefinitionRegistry">
+    	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
         <property name="baseBeanPackage" value="com.demo.annobean"></property>
         <!-- commonMapper和sqlProvider必填 -->
         <property name="commonMapper" value="com.ccmapper.customanno.CustomAnnoMapper"></property>

@@ -33,7 +33,7 @@ public abstract class AbstractCCMapperBeanDefinitionRegistry implements BeanDefi
 			throw new NullPointerException(this.getClass().getName() + "的beanClasssName和sqlProvider 不能为空");
 		}
 		for (Class<?> clazz : beanClassCollection) {
-			MapperDynamicUtils.registerCommonMapper(clazz, registry, getCommonMapper(), getSqlProvider());
+			MapperDynamicUtils.registerCommonMapper(clazz, registry, getCommonMapper(), getSqlProvider(), getSqlSessionFactoryBeanName());
 		}
 	}
 
@@ -62,5 +62,8 @@ public abstract class AbstractCCMapperBeanDefinitionRegistry implements BeanDefi
 	 * @return
 	 */
 	public abstract Class<?> getSqlProvider();
+	
+	
+	public abstract String getSqlSessionFactoryBeanName();
 
 }
