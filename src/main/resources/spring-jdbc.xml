@@ -57,6 +57,8 @@
         <!-- commonMapper和sqlProvider必填 -->
         <property name="commonMapper" value="com.ccmapper.customanno.CustomAnnoMapper"></property>
         <property name="sqlProvider" value="com.ccmapper.customanno.CustomAnnoDynamicMapperSqlProvider"></property>
+        <!-- 可以为空 默认为空串， 如果你的spring不支持泛型注入 那么可以指定此项   bean的名字默认为  beannamePrefix + beanClazz.getSimpleName() + commonMapperClass.getSimpleName() -->
+        <property name="beannamePrefix" value="annoPrefix"></property>
     </bean>
     
     

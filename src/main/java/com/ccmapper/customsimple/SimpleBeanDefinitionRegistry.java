@@ -31,4 +31,8 @@ public class SimpleBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 		return "sqlSessionFactory";
 	}
 
+	@Override
+	public String getBeannamePrefix() {
+		return "simpleBeanNamePrefix";
+	}
 }

@@ -2,6 +2,7 @@ package com.ccmapper.core.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -58,7 +59,7 @@ public class MapperDynamicUtils {
 			ClassPool pool = ClassPool.getDefault();
 			pool.insertClassPath(new ClassClassPath(MapperDynamicUtils.class));
 			CtClass superIn = pool.get(commonMapperClass.getName());
-			CtClass ct = pool.makeInterface(PRE_MAPPER_PACKAGE_NAME + "Proxy" + commonMapperClass.getSimpleName() + beanClazz.getSimpleName());
+			CtClass ct = pool.makeInterface(PRE_MAPPER_PACKAGE_NAME + "Proxy" + commonMapperClass.getSimpleName() + beanClazz.getSimpleName() + UUID.randomUUID().toString().replace("-", ""));
 			GenericUtils.setTCommonMapperGeneric(beanClazz, ct, commonMapperClass);
 			modifyAnnotation(ct, beanClazz,commonMapperClass, commonSqlProviderClass, superIn);
 			ct.setSuperclass(superIn);
@@ -162,7 +163,7 @@ public class MapperDynamicUtils {
 			ClassPool pool = ClassPool.getDefault();
 			pool.insertClassPath(new ClassClassPath(MapperDynamicUtils.class));
 			CtClass superIn = pool.get(superClass.getName());
-			CtClass ct = pool.makeClass(PRE_SQLPROVIDER_PACKAGE_NAME + "Proxy" + superSqlProviderClass.getSimpleName() + beanClass.getSimpleName());
+			CtClass ct = pool.makeClass(PRE_SQLPROVIDER_PACKAGE_NAME + "Proxy" + superSqlProviderClass.getSimpleName() + beanClass.getSimpleName() + UUID.randomUUID().toString().replace("-", ""));
 			ct.setGenericSignature(beseString + genString + ";");
 			ct.setSuperclass(superIn);
 			CtConstructor cons = new CtConstructor(new CtClass[] {}, ct);
@@ -190,13 +191,17 @@ public class MapperDynamicUtils {
 	 * @param commonSqlProviderClass
 	 * @return 这个专属beanClazz的Mapper的beanId
 	 */
-	public static String registerCommonMapper(Class<?> beanClazz, BeanDefinitionRegistry registry, Class<?> commonMapperClass, Class<?> commonSqlProviderClass, String sqlSessionFactoryBeanName) {
+	public static String registerCommonMapper(String beannamePrefix, Class<?> beanClazz, BeanDefinitionRegistry registry, Class<?> commonMapperClass, Class<?> commonSqlProviderClass, String sqlSessionFactoryBeanName) {
 
 		Class<?> clazz = generateMapperClass(beanClazz, commonMapperClass, commonSqlProviderClass);
 		// 通过BeanDefinitionBuilder创建bean定义
 		BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(clazz);
+		
+		if(beannamePrefix == null){
+			beannamePrefix = "";
+		}
 		// 注册bean
-		String beanname = clazz.getSimpleName();
+		String beanname = beannamePrefix + beanClazz.getSimpleName() + commonMapperClass.getSimpleName();
 		BeanDefinition definition = beanDefinitionBuilder.getRawBeanDefinition();
 		definition.setBeanClassName(MapperFactoryBean.class.getName());
 		definition.getPropertyValues().add("addToConfig", true);

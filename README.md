@@ -4,7 +4,7 @@
 > - 核心只有2个类。。。MapperDynamicUtils和泛型辅助类GenericUtils
 > - 核心方法   (方法返回自动生成接口的beanname)
 ```
-String MapperDynamicUtils.registerCommonMapper(beanClazz, registry, commonMapperClazz<T>, SqlProviderClass<? extend AbstractSqlProvider>， String sqlSessionFactoryBeanName);
+String MapperDynamicUtils.registerCommonMapper(beannamePrefix, beanClazz, registry, commonMapperClazz<T>, SqlProviderClass<? extend AbstractSqlProvider>， String sqlSessionFactoryBeanName);
 ```
 
 

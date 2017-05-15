@@ -31,6 +31,8 @@ public class CommonBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 	 * sqlSessionFactory的ID
 	 */
 	private String sqlSessionFactoryBeanName;
+	
+	private String beannamePrefix;
 
 	@Override
 	public Collection<Class<?>> getBeanList() {
@@ -79,6 +81,14 @@ public class CommonBeanDefinitionRegistry extends AbstractCCMapperBeanDefinition
 
 	public void setSqlSessionFactoryBeanName(String sqlSessionFactoryBeanName) {
 		this.sqlSessionFactoryBeanName = sqlSessionFactoryBeanName;
+	}
+
+	public String getBeannamePrefix() {
+		return beannamePrefix;
+	}
+
+	public void setBeannamePrefix(String beannamePrefix) {
+		this.beannamePrefix = beannamePrefix;
 	}
 
 }
