@@ -1,5 +1,6 @@
 package com.ccmapper.demo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -54,25 +55,36 @@ public class CustomAnnoMapperExampleTest extends AbstractTransactionalJUnit4Spri
 	}
 
 	@Test
-	public void testCrieria() {
+	public void testCrieria22() {
 		Example e = new Example();
 
-		Criteria and = e.andCriteria();
-		and.equalTo("sex", 1);
+		Criteria c = e.createAndCriteria();
+		c.equalTo("sex", 1);
+		
+		List<String> list = new ArrayList<String>();
+		list.add("1");
+		list.add("2");
+	//	e.createOrCriteria().equalTo("name" , "abc").equalTo("age", 5).equalTo("name", "yyyy").in("age", "1" , "3");
+		
+		e.createOrCriteria().in("age", "1" , "3");
 
-		Criteria or = e.orCriteria();
-		or.greaterThan("age", 50);
-
-		Criteria or2 = e.orCriteria();
-		or2.greaterThan("age", 30);
-		or2.greaterThan("sex", 0);
+		
+		e.createAndCriteria().equalTo("sex", 2);
+//		Criteria or = e.orCriteria();
+//		or.greaterThan("age", 50);
+//		
+//		//or.greaterThan("age", 50);
+//
+//		Criteria or2 = e.orCriteria();
+//		//or2.greaterThan("age", 30);
+//		or2.greaterThan("sex", 0);
 
 		e.orderBy("age").desc();
 		e.orderBy("id").desc();
 
 		printList(userAnnoCustomMapper.getListByExample(e));
 	}
-
+	
 	private void printList(List<?> list) {
 		for (Object o : list) {
 			logger.info(o.toString());

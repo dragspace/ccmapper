@@ -1,25 +1,19 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014-2016 abel533@gmail.com
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014-2016 abel533@gmail.com Permission is
+ * hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the
+ * Software without restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions: The above copyright notice and this
+ * permission notice shall be included in all copies or substantial portions of
+ * the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+ * EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package com.ccmapper.core.example;
@@ -35,10 +29,9 @@ import com.ccmapper.core.utils.CCStringUtils;
 
 /**
  * 通用的Example查询对象
- *
- * @author liuzh
  */
 public class Example extends HashMap<String, Object> {
+
 	// private boolean distinct;
 
 	/**
@@ -50,9 +43,9 @@ public class Example extends HashMap<String, Object> {
 
 	private List<String> selectPropertyList;
 
-	private List<Criteria> orCriteriaList;
+	// private List<Criteria> orCriteriaList;
 
-	private Criteria andCriteria;
+	private List<Criteria> criteriaList;
 
 	private List<OrderBy> orderByList;
 
@@ -66,7 +59,7 @@ public class Example extends HashMap<String, Object> {
 	 */
 	public Example(boolean notNull) {
 		this.notNull = notNull;
-		this.orCriteriaList = new ArrayList<Criteria>();
+		this.criteriaList = new ArrayList<Criteria>();
 		this.orderByList = new ArrayList<OrderBy>();
 	}
 
@@ -83,9 +76,11 @@ public class Example extends HashMap<String, Object> {
 	public static class OrderBy {
 
 		private static final String ASC = "  ASC";
+
 		private static final String DESC = "  DESC";
 
 		private String propertyName;
+
 		private String ascOrDesc;
 
 		public OrderBy(String propertyName) {
@@ -130,58 +125,48 @@ public class Example extends HashMap<String, Object> {
 	}
 
 	/**
-	 * @Title: orCriteria
-	 * @Description: 注意这个每次调用都会返回一个新的实例
+	 * @Title: andCriteria
+	 * @Description: 这个只会返回 唯一一个实例
 	 * @author xiaoruihu
 	 * @return
 	 */
-	public Criteria orCriteria() {
-		Criteria criteria = createCriteriaInternal();
-		orCriteriaList.add(criteria);
+	public Criteria createAndCriteria() {
+		Criteria criteria = new Criteria(notNull, ExampleConstant.AND);
+		this.criteriaList.add(criteria);
 		return criteria;
 	}
-
+	
 	/**
 	 * @Title: andCriteria
 	 * @Description: 这个只会返回 唯一一个实例
 	 * @author xiaoruihu
 	 * @return
 	 */
-	public Criteria andCriteria() {
-		if (this.andCriteria == null) {
-			this.andCriteria = createCriteriaInternal();
-		}
-		return this.andCriteria;
-	}
-
-	protected Criteria createCriteriaInternal() {
-		return new Criteria(notNull);
+	public Criteria createOrCriteria() {
+		Criteria criteria = new Criteria(notNull, ExampleConstant.OR);
+		this.criteriaList.add(criteria);
+		return criteria;
 	}
 
 	public String generateWhereSql(Map<String, String> propertyAndColumnMap) {
 
 		StringBuilder whereSqlSB = new StringBuilder();
 
-		if (this.andCriteria != null) {
-			whereSqlSB.append(this.andCriteria.generateSql(propertyAndColumnMap, params));
-		}
-
-		for (Criteria c : this.orCriteriaList) {
+		for (Criteria c : this.criteriaList) {
 
 			String criteriaSql = c.generateSql(propertyAndColumnMap, params);
 			if (criteriaSql == null) {
 				continue;
 			}
-			whereSqlSB.append(ExampleConstant.OR);
+			
 			if (c.isMany()) {
 				whereSqlSB.append("(" + criteriaSql + ")");
 			} else {
 				whereSqlSB.append(criteriaSql);
 			}
+			whereSqlSB.append(ExampleConstant.AND);
 		}
-		if (this.andCriteria == null && !this.orCriteriaList.isEmpty()) {
-			CCStringUtils.deleteEnd(whereSqlSB, ExampleConstant.OR);
-		}
+		CCStringUtils.deleteEnd(whereSqlSB, ExampleConstant.AND);
 
 		String whereSql = whereSqlSB.toString();
 		if ("".equals(whereSql)) {
@@ -225,13 +210,18 @@ public class Example extends HashMap<String, Object> {
 	}
 
 	public static class Criteria {
+
 		private List<Criterion> criterionList;
+
 		// 值是否不能为空
 		protected boolean notNull;
+		
+		private String andOrOr;
 
-		protected Criteria(boolean notNull) {
+		protected Criteria(boolean notNull, String andOrOr) {
 			this.notNull = notNull;
 			criterionList = new ArrayList<Criterion>();
+			this.andOrOr = andOrOr;
 		}
 
 		protected boolean isMany() {
@@ -245,10 +235,10 @@ public class Example extends HashMap<String, Object> {
 			}
 			for (Criterion c : this.criterionList) {
 				sb.append(c.generateSql(propertyAndColumnMap, params));
-				sb.append(ExampleConstant.AND);
+				sb.append(this.andOrOr);
 			}
 
-			return CCStringUtils.deleteEnd(sb, ExampleConstant.AND).toString();
+			return CCStringUtils.deleteEnd(sb, this.andOrOr).toString();
 		}
 
 		protected void addCriterion(SqlSign sqlSign, String propertyName) {
@@ -323,9 +313,17 @@ public class Example extends HashMap<String, Object> {
 		public Criteria in(String property, Collection<?> values) {
 			return andSqlSign(SqlSign.In, property, values);
 		}
+		
+		public Criteria in(String property, Object... values) {
+			return andSqlSign(SqlSign.In, property, Arrays.asList(values));
+		}
 
 		public Criteria notIn(String property, Collection<?> values) {
 			return andSqlSign(SqlSign.NotIn, property, values);
+		}
+		
+		public Criteria notIn(String property, Object... values) {
+			return andSqlSign(SqlSign.NotIn, property, Arrays.asList(values));
 		}
 
 		public Criteria between(String property, Object value1, Object value2) {
@@ -358,10 +356,15 @@ public class Example extends HashMap<String, Object> {
 	 * @author xiaoruihu 2016年6月6日 下午3:47:04
 	 */
 	protected static class Criterion {
+
 		private SqlSign sqlSign;
+
 		private String propertyName;
+
 		private Object value;
+
 		private Object secondValue;
+
 		private boolean isCollection = false;
 
 		protected Criterion(SqlSign sqlSign, String propertyName) {
