@@ -1,7 +1,7 @@
 # ccmapper
-> - 用来自定义通用mapper的工具集(可以自己定义通用mapper的sql方法) 注：  参考了 mapper插件的API。。。 。。
+> - 用来自定义通用mapper的工具集(可以自己定义通用mapper的sql方法) 注：  参考了 mapper插件的API.
 > - 原理      动态生成泛型子接口，并注入到spring中
-> - 核心只有2个类。。。MapperDynamicUtils和泛型辅助类GenericUtils
+> - 核心只有2个类，MapperDynamicUtils和泛型辅助类GenericUtils
 > - 核心方法   (方法返回自动生成接口的beanname)
 ```
 String MapperDynamicUtils.registerCommonMapper(beannamePrefix, beanClazz, registry, commonMapperClazz<T>, SqlProviderClass<? extend AbstractSqlProvider>， String sqlSessionFactoryBeanName);
@@ -50,5 +50,6 @@ private CustomAnnoMapper<OrgAnno> orgAnnoCustomAnnoMapper;
 >> List<Map<String, Object>>
 
 [**具体讲解**](https://my.oschina.net/DragonSpace/blog/839247)
+
 
 
